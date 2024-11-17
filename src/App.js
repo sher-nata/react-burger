@@ -31,7 +31,7 @@ function App() {
           <span className={headerStyles.menu__elem}><ListIcon type="primary" />Лента заказов</span>
         </AppHeader>
       </div>
-      <div className={appStyles.main__container}>
+      <main className={appStyles.main__container}>
         <div className={appStyles.container}>
           <div className={appStyles.ingridients__title}> 
             <h1 className="text text_type_main-large">Соберите бургер</h1>
@@ -56,8 +56,7 @@ function App() {
               <div className={appStyles.columns}>
                 {buns.map((ingridient) => (
                   <div className={appStyles.column} key={ingridient._id}>
-                    <BurgerIngridients name={ingridient.name} price={ingridient.price} image={ingridient.image}
-                    value={ingridient.__v}/> 
+                    <BurgerIngridients ingridient={ingridient}/> 
                   </div> 
                 ))}
               </div>
@@ -69,8 +68,7 @@ function App() {
               <div className={appStyles.columns}>
                 {sauces.map((ingridient) => (
                 <div key={ingridient._id}>
-                  <BurgerIngridients name={ingridient.name} price={ingridient.price} image={ingridient.image}
-                  value={ingridient.__v}/> 
+                  <BurgerIngridients ingridient={ingridient}/> 
                 </div> 
                 ))}
               </div>
@@ -82,8 +80,7 @@ function App() {
               <div className={appStyles.columns}>
                 {maines.map((ingridient) => (
                 <div key={ingridient._id}>
-                  <BurgerIngridients name={ingridient.name} price={ingridient.price} image={ingridient.image}
-                  value={ingridient.__v}/> 
+                  <BurgerIngridients ingridient={ingridient}/> 
                 </div> 
                 ))}
               </div>
@@ -94,7 +91,7 @@ function App() {
         <div className={appStyles.container}>
          <BurgerConstructor ingridients={ingridients} />
         </div>
-      </div>  
+      </main>  
     </div>
   );
 }

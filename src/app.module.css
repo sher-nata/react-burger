@@ -6,7 +6,7 @@
 
 .header{
   display: block;
-  height: 128px;
+  height: 108px;
 }
 
 .main__container{
@@ -16,7 +16,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  gap: 24px;
+  column-gap: 24px;
 }
 
 .container{
@@ -24,9 +24,8 @@
     position: relative;
     align-items: stretch;
     width: 620px;
-    height: calc(97vh - 108px);
+    height: calc(97vh - 88px);
     background: #131316;
-    border: 2px solid #4C4CFF;
 }
 
 .ingridients{
@@ -65,7 +64,6 @@
 .ingridients__headline{
   margin-top: 30px;
   padding-left: 20px;
-  border: 1px solid #4C4CFF
 }
 .columns{
   column-count: 2;

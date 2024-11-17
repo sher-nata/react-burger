@@ -4,24 +4,34 @@ import burgerIngridientsStyles from './burger-ingridients.module.css';
 import { CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components'
 
 
-function BurgerIngridients({name, price, image, value=0}) {
+function BurgerIngridients({ingridient}) {
     return(
         <div className={burgerIngridientsStyles.ingridient}>
-            <img src={image}/>
-            <p className="text text_type_digits-default">{price} <CurrencyIcon type="primary" /></p>
-            <p className="text text_type_main-small">{name}</p>
-            {value > 0 &&
-                <Counter count={value} size="default" extraClass="m-1" />
+            <img src={ingridient.image}/>
+            <p className="text text_type_digits-default">{ingridient.price} <CurrencyIcon type="primary" /></p>
+            <p className="text text_type_main-small">{ingridient.name}</p>
+            {ingridient.__v > 0 &&
+                <Counter count={ingridient.__v} size="default" extraClass="m-1" />
             }
         </div>          
     )
 }
 
 BurgerIngridients.propTypes = {
-    name: PropTypes.string,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    value: PropTypes.number
-  }; 
+    ingridient: PropTypes.shape({
+        _id:  PropTypes.string,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,   
+        price: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        __v: PropTypes.number.isRequired
+    }).isRequired
+  } ; 
 
 export default BurgerIngridients

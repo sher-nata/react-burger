@@ -8,8 +8,6 @@ return(
 <header className={headerStyles.menu}>
     <div className={headerStyles.menu__content}>
         <nav className={headerStyles.menu__nav}>
-            {/*<span className={headerStyles.menu__elem}><BurgerIcon type="primary" />Конструктор</span>
-            <span className={headerStyles.menu__elem}><ListIcon type="primary" />Лента заказов</span>*/}
             {props.children}
         </nav>
         <Logo className={headerStyles.menu__logo}/>
