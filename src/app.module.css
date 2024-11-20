@@ -29,7 +29,7 @@
 }
 
 .ingridients{
-  height: 100%;
+  height: calc(100% - 140px);
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -76,5 +76,4 @@
 .column{
   display: block;
   height: 208px;
-
 }
