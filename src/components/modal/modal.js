@@ -31,7 +31,7 @@ export default function Modal ({header="", onClose, children}) {
     
     useEffect(() => {
         const handleEscapePress = (e) => {
-          if(e.keyCode === 27){
+          if(e.key === "Escape"){
             onClose()
           }
         }

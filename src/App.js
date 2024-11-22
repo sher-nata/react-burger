@@ -23,7 +23,11 @@ function App() {
   
   const [current, setCurrent] = React.useState('one')
 
-  const [ingridientsState, setIngridients] = React.useState({isLoading: false, hasError: false, ingridients: []})
+  const [ingridients, setIngridients] = React.useState([])
+
+  const [hasError, setHasError] = React.useState(null)
+
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const [modalVisible, setModalVisible] = React.useState(false)
 
@@ -57,32 +61,45 @@ function App() {
   }
 
   useEffect(()=>{
-    const getIngridients = () => {
-      setIngridients({ ...ingridientsState, hasError: false, isLoading: true });
-      fetch(ingridientsUrl)
-        .then(res => res.json())
-        .then(data => {
-          if(data['data'].length){
-            const bunInd = data['data'].findIndex(ing => (ing.type === "bun"));
-            if (bunInd >= 0) {
-              data['data'][bunInd]['__v'] = 1;
-            } 
-            const sauceInd = data['data'].findIndex(ing => (ing.type === "sauce"));
-            if (sauceInd >= 0) {
-              data['data'][sauceInd]['__v'] = 1;
-            } 
 
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const getIngridients = async () => {
+      setHasError(null)
+      setIsLoading(false)
+      try {
+        const response = await fetch(ingridientsUrl, { signal });
+        if (!response.ok) {
+          throw new Error(`Ошибка: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        if(data['data'].length){
+          const bunInd = data['data'].findIndex(ing => (ing.type === "bun"));
+          if (bunInd >= 0) {
+            data['data'][bunInd]['__v'] = 1;
           } 
-          setIngridients({ ...ingridientsState, ingridients: data['data'], isLoading: false })})
-        .catch(error => {console.error(error)});
+          const sauceInd = data['data'].findIndex(ing => (ing.type === "sauce"));
+          if (sauceInd >= 0) {
+            data['data'][sauceInd]['__v'] = 1;
+          } 
+
+        } 
+        setIngridients(data['data']);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setHasError(err.message)
+          console.log(err.message)
+        }
+      } finally {
+        setIsLoading(false)
+      }
     };
   
     getIngridients();
-    
 
   }, []);
-
-  const { ingridients, isLoading, hasError } = ingridientsState;
 
   const burgerIngridientsSettings = [{
     title: "Булки",
