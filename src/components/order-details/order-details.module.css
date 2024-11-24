@@ -1,0 +1,26 @@
+.main_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.order_number{
+    display: flex;
+    align-items: center;
+    padding: 0px;
+}
+
+.image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    margin: 40px;  
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}

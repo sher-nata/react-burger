@@ -1,0 +1,74 @@
+.components{
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    gap: 16px;
+    
+    position: relative;
+    width: 590px;
+    height: 75%;
+    left: 16px;
+    top: 50px;
+}
+
+.total{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px;
+    gap: 40px;
+    margin-bottom: 20px;
+
+    position: absolute;
+    width: 590px;
+    height: 64px;
+    left: 16px;
+    bottom: 0;
+}
+
+.total__price{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;
+    
+    width: 119px;
+    height: 64px;   
+}
+
+.other_ingridients{
+    gap: 8px;
+}
+
+.container_other_ingridients{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    gap: 10px;
+
+    ::-webkit-scrollbar {
+        width: 10px;
+      }
+      
+      /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      
+      /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+      
+      /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      } 
+}
+
+.ingridient_bun{
+    margin-left: 22px;
+}

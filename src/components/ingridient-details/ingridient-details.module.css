@@ -1,0 +1,37 @@
+.main_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image{
+    margin: 20px;
+}
+
+.ingridient_detail{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 32px;
+}
+
+.nutritition_values{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 20px;
+
+}
+
+.nutritition_value{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;
+    width: 128px;
+    height: 56px;
+}
