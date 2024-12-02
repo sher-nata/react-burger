@@ -24,6 +24,6 @@ export default function OrderDetails({order}) {
 
 OrderDetails.propTypes = {
     order: PropTypes.shape({
-        number: PropTypes.string.isRequired,
+        number: PropTypes.number.isRequired,
     }).isRequired
 };
