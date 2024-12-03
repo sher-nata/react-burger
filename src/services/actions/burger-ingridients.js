@@ -3,6 +3,7 @@ export const GET_INGRIDIENTS_SUCCESS = 'GET_INGRIDIENTS_SUCCESS';
 export const GET_INGRIDIENTS_FAILED = 'GET_INGRIDIENTS_FAILED';
 export const INCREASE_INGRIDIENTS = 'INCREASE_INGRIDIENTS';
 export const DECREASE_INGRIDIENTS = 'DECREASE_INGRIDIENTS';
+export const RESET_INGRIDIENTS = 'RESET_INGRIDIENTS';
 
 
 export const getIngridients = (ingridientsUrl) => async (dispatch) => {

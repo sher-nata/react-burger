@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import {v4 as uuidv4} from 'uuid';
+import Loader from "react-js-loader";
 import appStyles from './app.module.css';
 import headerStyles from './components/app-header/app-header.module.css';
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/fonts/fonts.css";
@@ -20,8 +22,9 @@ import { CONSTRUCTOR_ADD_INGRIDIENT, CONSTRUCTOR_DELETE_INGRIDIENT } from './ser
 import { setOrder } from './services/actions/order-details';
 
 
-const ingridientsUrl = 'https://norma.nomoreparties.space/api/ingredients';
-const orderUrl = "https://norma.nomoreparties.space/api/orders"
+const BASE_URL = 'https://norma.nomoreparties.space/api/'
+const ingridientsUrl = 'ingredients';
+const orderUrl = "orders"
 
 
 function App() {
@@ -42,20 +45,21 @@ function App() {
   const constructorBun =  useSelector(state => state.constructor.bun);
 
   const orderDetails = useSelector(state => state.order.orderDetails);
- 
+  const isOrderLoading = useSelector(state => state.order.isLoading)
+
   const tabContainer = useRef();
   const tabBun = useRef();
   const tabSauce = useRef();
   const tabMain = useRef();
 
   const hableOpenOrderModal = e => {
-    if(constructorBun || constructorIngridients && constructorIngridients.length > 0) {
+    if(constructorBun && constructorIngridients && constructorIngridients.length > 0) {
       const orderItems = [];
       if (constructorBun) {orderItems.push(constructorBun._id)}
       constructorIngridients.forEach((item) => {
         orderItems.push(item._id)})
       if (constructorBun) {orderItems.push(constructorBun._id)} 
-      dispatch(setOrder(orderUrl, orderItems))
+      dispatch(setOrder(BASE_URL + orderUrl, orderItems))
     } 
     if (e) {
       e.stopPropagation();
@@ -90,7 +94,7 @@ function App() {
 
   const handleDrop = (itemId) => {
     const item = ingridients.find(ing => (ing._id === itemId.itemId));
-    dispatch({type: CONSTRUCTOR_ADD_INGRIDIENT,  payload: {item: item}});
+    dispatch({type: CONSTRUCTOR_ADD_INGRIDIENT,  payload: {item: item, uniqueId: uuidv4()}});
     dispatch({type: INCREASE_INGRIDIENTS, payload: {id: itemId.itemId}});
   };
 
@@ -102,7 +106,7 @@ function App() {
 
   useEffect(()=>{
 
-    dispatch(getIngridients(ingridientsUrl));
+    dispatch(getIngridients(BASE_URL + ingridientsUrl));
 
   }, []);
 
@@ -154,7 +158,10 @@ function App() {
         </AppHeader>
       </div>
       <DndProvider backend={HTML5Backend}>
-      <main className={appStyles.main__container}>
+      <main className={appStyles.main__container}> 
+        {isOrderLoading && <div className={appStyles.loader_overlay}><div className={appStyles.loader}>
+          <Loader type="spinner-default" bgColor={'white'} color={'white'} size={50}/>
+          </div></div>}
         {isFailed && 'Ошибка при загрузке данных...'}
         {!isFailed && !isLoading && ingridients.length && 
         <>
@@ -179,7 +186,7 @@ function App() {
           </div>
         </div>
         <div className={appStyles.container}>
-          {isModalOpen && isOrder && 
+          {isModalOpen && isOrder &&
           <Modal onClose={handleCloseModal}>
               <OrderDetails order={orderDetails.order}/>
           </Modal>}

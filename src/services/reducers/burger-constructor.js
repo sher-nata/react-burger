@@ -2,7 +2,8 @@ import update from 'immutability-helper'
 import { 
   CONSTRUCTOR_ADD_INGRIDIENT, 
   CONSTRUCTOR_DELETE_INGRIDIENT, 
-  CONSTRUCTOR_MOVE_INGRIDIENT } from "../actions/burger-constructor";
+  CONSTRUCTOR_MOVE_INGRIDIENT,
+  CONSTRUCTOR_CLEAR_INGRIDIENTS } from "../actions/burger-constructor";
 
 const initialState = {
     bun: null, 
@@ -17,7 +18,8 @@ export function constructorReducer(state = initialState, action){
                 return { ...state, bun: action.payload.item };
            }
            else {
-                return { ...state, ingridients: [...state.ingridients, action.payload.item] }
+                return { ...state, ingridients: [...state.ingridients, 
+                  {...action.payload.item, uniqueId: action.payload.uniqueId}] }
            }
         }
         case CONSTRUCTOR_DELETE_INGRIDIENT: {
@@ -35,6 +37,9 @@ export function constructorReducer(state = initialState, action){
                   [action.payload.hoverIndex, 0, state.ingridients[action.payload.dragIndex]],
                 ],
               })};
+      }case CONSTRUCTOR_CLEAR_INGRIDIENTS: {
+        return {bun: null, ingridients: []}   
+
       }
         default: {
           return state;

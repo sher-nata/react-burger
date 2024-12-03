@@ -1,4 +1,6 @@
 import { OPEN_ORDER_MODAL } from "./modal";
+import { CONSTRUCTOR_CLEAR_INGRIDIENTS } from "./burger-constructor";
+import { RESET_INGRIDIENTS } from "./burger-ingridients";
 
 export const SET_ORDER_REQUEST = 'SET_ORDER_REQUEST';
 export const SET_ORDER_SUCCESS = 'SET_ORDER_SUCCESS';
@@ -28,9 +30,9 @@ export const setOrder = (orderUrl, orderDetails) => async (dispatch) => {
             type: SET_ORDER_SUCCESS,
             payload: {order: data}
             });
-        dispatch({
-                type: OPEN_ORDER_MODAL
-            });
+        dispatch({ type: OPEN_ORDER_MODAL });
+        dispatch({ type: CONSTRUCTOR_CLEAR_INGRIDIENTS });
+        dispatch({ type: RESET_INGRIDIENTS })
     } catch (err) {
         if (err.name !== 'AbortError') {
             dispatch({

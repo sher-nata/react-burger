@@ -138,9 +138,9 @@ function BurgerConstructor({bun=null, ingridients=[], onClick, onDrop, onDelete}
     });
 
     const otherIngridients = (ingridients && ingridients.length > 0) ? (ingridients.map((ing, index) => 
-        { return <ConstructorIngridient ingridient={ing} index={index} key={uuidv4()} onDelete={onDelete} /> })) :
+        { return <ConstructorIngridient ingridient={ing} index={index} key={ing.uniqueId} onDelete={onDelete} /> })) :
         ([ 
-            <div key={uuidv4()} className={burgerConstructorStyles.ingridient_bun}>
+            <div key='empty_ingridient' className={burgerConstructorStyles.ingridient_bun}>
                 <div className={`${burgerConstructorStyles.empty_align} constructor-element`}>
                     <div className={burgerConstructorStyles.empty_align}>
                         <span>Выберите начинку</span>    
@@ -159,7 +159,7 @@ function BurgerConstructor({bun=null, ingridients=[], onClick, onDrop, onDelete}
                     price={bun.price}
                     thumbnail={bun.image_mobile} />
                 </div>) : 
-                (<div key={uuidv4()} className={burgerConstructorStyles.ingridient_bun}>
+                (<div key={`'empty_bun_'${top ? 'top': 'bottom'}`} className={burgerConstructorStyles.ingridient_bun}>
                     <div className={`${burgerConstructorStyles.empty_align} constructor-element ${top ? "constructor-element_pos_top" : "constructor-element_pos_bottom"}`}>
                         <div className={burgerConstructorStyles.empty_align}>
                         <span>Выберите булку</span>    

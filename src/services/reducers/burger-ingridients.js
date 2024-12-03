@@ -3,7 +3,8 @@ import {
     GET_INGRIDIENTS_SUCCESS, 
     GET_INGRIDIENTS_FAILED,
     INCREASE_INGRIDIENTS,
-    DECREASE_INGRIDIENTS } from "../actions/burger-ingridients";
+    DECREASE_INGRIDIENTS,
+    RESET_INGRIDIENTS } from "../actions/burger-ingridients";
 
 const initialState = {
     ingridients: [], 
@@ -34,6 +35,9 @@ export function ingridientsReducer(state = initialState, action){
             return { ...state, ingridients: [...state.ingridients].map(item =>
                 item._id === action.payload.id ? { ...item, __v: (item.type==='bun') ? 0 : (item.__v - 1) } : item
               )};
+        }
+        case RESET_INGRIDIENTS: {
+            return { ...state, ingridients: [...state.ingridients].map((item) => {return {...item, __v: 0} })  };
         }
         default: {
           return state;
