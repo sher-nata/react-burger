@@ -117,6 +117,7 @@ ConstructorIngridient.propTypes = {
         image_mobile: PropTypes.string.isRequired,
         image_large: PropTypes.string,
         __v: PropTypes.number,
+        uniqueId: PropTypes.string,
         }).isRequired,
     index: PropTypes.number.isRequired,
     onDelete: PropTypes.func.isRequired
@@ -202,6 +203,7 @@ BurgerConstructor.propTypes = {
         image_mobile: PropTypes.string.isRequired,
         image_large: PropTypes.string,
         __v: PropTypes.number,
+        uniqueId: PropTypes.string.isRequired,
         })),
     bun: PropTypes.shape({
         _id:  PropTypes.string.isRequired,
