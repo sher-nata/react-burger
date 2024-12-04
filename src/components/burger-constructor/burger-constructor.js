@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {v4 as uuidv4} from 'uuid';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { CurrencyIcon, DragIcon, Button, ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
-import { CONSTRUCTOR_MOVE_INGRIDIENT } from '../../services/actions/burger-constructor';
+import { constructorMoveIngridient } from '../../services/actions/burger-constructor';
 
 
 const IngridientsTotal = ({ total, onClick}) => {
@@ -83,12 +83,7 @@ const ConstructorIngridient = ({ ingridient, index, onDelete}) => {
 
 
     const moveContainerIngridient = (dragIndex, hoverIndex) => {
-        dispatch({type: CONSTRUCTOR_MOVE_INGRIDIENT, 
-            payload: {
-                dragIndex: dragIndex,
-                hoverIndex: hoverIndex
-            }
-        })
+        dispatch(constructorMoveIngridient(dragIndex, hoverIndex))
     }
     
     return (

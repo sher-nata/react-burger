@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {v4 as uuidv4} from 'uuid';
 import Loader from "react-js-loader";
 import appStyles from './app.module.css';
 import headerStyles from './components/app-header/app-header.module.css';
@@ -16,13 +15,12 @@ import BurgerConstructor from './components/burger-constructor/burger-constructo
 import Modal from './components/modal/modal';
 import IngridientDetails from './components/ingridient-details/ingridient-details';
 import OrderDetails from './components/order-details/order-details';
-import { getIngridients, INCREASE_INGRIDIENTS, DECREASE_INGRIDIENTS } from './services/actions/burger-ingridients'
-import { OPEN_INGRIDIENT_MODAL, OPEN_ORDER_MODAL, CLOSE_MODAL } from './services/actions/modal';
-import { CONSTRUCTOR_ADD_INGRIDIENT, CONSTRUCTOR_DELETE_INGRIDIENT } from './services/actions/burger-constructor';
+import { getIngridients, increaseIngridient, decreaseIngridient } from './services/actions/burger-ingridients'
+import { openIngridientModal, closeModal } from './services/actions/modal';
+import { constructorAddIngridient, constructorDeleteIngridient } from './services/actions/burger-constructor';
 import { setOrder } from './services/actions/order-details';
 
 
-const BASE_URL = 'https://norma.nomoreparties.space/api/'
 const ingridientsUrl = 'ingredients';
 const orderUrl = "orders"
 
@@ -59,7 +57,7 @@ function App() {
       constructorIngridients.forEach((item) => {
         orderItems.push(item._id)})
       if (constructorBun) {orderItems.push(constructorBun._id)} 
-      dispatch(setOrder(BASE_URL + orderUrl, orderItems))
+      dispatch(setOrder(orderUrl, orderItems))
     } 
     if (e) {
       e.stopPropagation();
@@ -67,14 +65,14 @@ function App() {
   }
 
   const hableOpenIngridientModal = e => {
-    dispatch({type: OPEN_INGRIDIENT_MODAL, payload: {id: e.currentTarget.getAttribute('id')}});
+    dispatch( openIngridientModal(e.currentTarget.getAttribute('id')) );
     if (e) {
       e.stopPropagation();
     }
   }
 
   const handleCloseModal = e => {
-    dispatch({type: CLOSE_MODAL});
+    dispatch( closeModal() );
     if (e) {
       e.stopPropagation();
     }
@@ -94,19 +92,19 @@ function App() {
 
   const handleDrop = (itemId) => {
     const item = ingridients.find(ing => (ing._id === itemId.itemId));
-    dispatch({type: CONSTRUCTOR_ADD_INGRIDIENT,  payload: {item: item, uniqueId: uuidv4()}});
-    dispatch({type: INCREASE_INGRIDIENTS, payload: {id: itemId.itemId}});
+    dispatch(constructorAddIngridient(item));
+    dispatch(increaseIngridient(itemId.itemId));
   };
 
   const handleDeleteIngridient = (index) => {
     const itemId = constructorIngridients[index]._id;
-    dispatch({type: CONSTRUCTOR_DELETE_INGRIDIENT, payload: {index: index} });
-    dispatch({type: DECREASE_INGRIDIENTS, payload: {id: itemId} });
+    dispatch(constructorDeleteIngridient(index));
+    dispatch(decreaseIngridient(itemId));
   }
 
   useEffect(()=>{
 
-    dispatch(getIngridients(BASE_URL + ingridientsUrl));
+    dispatch(getIngridients(ingridientsUrl));
 
   }, []);
 
