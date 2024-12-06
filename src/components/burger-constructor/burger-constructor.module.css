@@ -72,3 +72,9 @@
 .ingridient_bun{
     margin-left: 22px;
 }
+
+.empty_align{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

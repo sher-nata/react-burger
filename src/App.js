@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Loader from "react-js-loader";
 import appStyles from './app.module.css';
 import headerStyles from './components/app-header/app-header.module.css';
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/fonts/fonts.css";
@@ -11,105 +15,112 @@ import BurgerConstructor from './components/burger-constructor/burger-constructo
 import Modal from './components/modal/modal';
 import IngridientDetails from './components/ingridient-details/ingridient-details';
 import OrderDetails from './components/order-details/order-details';
+import { getIngridients, increaseIngridient, decreaseIngridient } from './services/actions/burger-ingridients'
+import { openIngridientModal, closeModal } from './services/actions/modal';
+import { constructorAddIngridient, constructorDeleteIngridient } from './services/actions/burger-constructor';
+import { setOrder } from './services/actions/order-details';
 
 
-const ingridientsUrl = 'https://norma.nomoreparties.space/api/ingredients';
+const ingridientsUrl = 'ingredients';
+const orderUrl = "orders"
 
-const order = {
-  number: "034563"
-}
 
 function App() {
   
-  const [current, setCurrent] = React.useState('one')
+  const dispatch = useDispatch();
 
-  const [ingridients, setIngridients] = React.useState([])
+  const [current, setCurrent] = React.useState('bun')
 
-  const [hasError, setHasError] = React.useState(null)
+  const ingridients = useSelector(state => state.ingridients.ingridients);
+  const isFailed = useSelector(state => state.ingridients.isFailed);
+  const isLoading = useSelector(state => state.ingridients.isLoading);
 
-  const [isLoading, setIsLoading] = React.useState(false)
+  const selectedIngridient = useSelector(state => state.modal.selectedIngridient);
+  const isModalOpen = useSelector(state => state.modal.isModalOpen);
+  const isOrder = useSelector(state => state.modal.isOrder);
 
-  const [modalVisible, setModalVisible] = React.useState(false)
+  const constructorIngridients =  useSelector(state => state.constructor.ingridients);
+  const constructorBun =  useSelector(state => state.constructor.bun);
 
-  const [selectedIngridient, setSelectedIngridient] = React.useState(null)
+  const orderDetails = useSelector(state => state.order.orderDetails);
+  const isOrderLoading = useSelector(state => state.order.isLoading)
 
-  const [isOrder, setIsOrder] = React.useState(false)
+  const tabContainer = useRef();
+  const tabBun = useRef();
+  const tabSauce = useRef();
+  const tabMain = useRef();
 
   const hableOpenOrderModal = e => {
-    setModalVisible(true);
-    setIsOrder(true);
+    if(constructorBun && constructorIngridients && constructorIngridients.length > 0) {
+      const orderItems = [];
+      if (constructorBun) {orderItems.push(constructorBun._id)}
+      constructorIngridients.forEach((item) => {
+        orderItems.push(item._id)})
+      if (constructorBun) {orderItems.push(constructorBun._id)} 
+      dispatch(setOrder(orderUrl, orderItems))
+    } 
     if (e) {
       e.stopPropagation();
     }
   }
 
   const hableOpenIngridientModal = e => {
-    setModalVisible(true);
-    setSelectedIngridient(e.currentTarget.getAttribute('id'));
+    dispatch( openIngridientModal(e.currentTarget.getAttribute('id')) );
     if (e) {
       e.stopPropagation();
     }
   }
 
   const handleCloseModal = e => {
-    setModalVisible(false);
-    setSelectedIngridient(null);
-    setIsOrder(false);
+    dispatch( closeModal() );
     if (e) {
       e.stopPropagation();
     }
   }
 
+  const handleScroll = e =>{
+    const startTabPos = tabContainer.current.getBoundingClientRect().bottom;
+    const rectBun = tabBun.current.getBoundingClientRect();
+    const rectSauce = tabSauce.current.getBoundingClientRect();
+    const rectMain = tabMain.current.getBoundingClientRect();
+   
+    const tabs = ['bun', 'sauce', 'main']
+    const distance = [Math.abs(startTabPos - rectBun.top), Math.abs(startTabPos - rectSauce.top), Math.abs(startTabPos - rectMain.top)];
+    const smallest = distance.indexOf(Math.min(...distance))
+    setCurrent(tabs[smallest])
+  }
+
+  const handleDrop = (itemId) => {
+    const item = ingridients.find(ing => (ing._id === itemId.itemId));
+    dispatch(constructorAddIngridient(item));
+    dispatch(increaseIngridient(itemId.itemId));
+  };
+
+  const handleDeleteIngridient = (index) => {
+    const itemId = constructorIngridients[index]._id;
+    dispatch(constructorDeleteIngridient(index));
+    dispatch(decreaseIngridient(itemId));
+  }
+
   useEffect(()=>{
 
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    const getIngridients = async () => {
-      setHasError(null)
-      setIsLoading(false)
-      try {
-        const response = await fetch(ingridientsUrl, { signal });
-        if (!response.ok) {
-          throw new Error(`Ошибка: ${response.status}`);
-        }
-  
-        const data = await response.json();
-        if(data['data'].length){
-          const bunInd = data['data'].findIndex(ing => (ing.type === "bun"));
-          if (bunInd >= 0) {
-            data['data'][bunInd]['__v'] = 1;
-          } 
-          const sauceInd = data['data'].findIndex(ing => (ing.type === "sauce"));
-          if (sauceInd >= 0) {
-            data['data'][sauceInd]['__v'] = 1;
-          } 
-
-        } 
-        setIngridients(data['data']);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          setHasError(err.message)
-          console.log(err.message)
-        }
-      } finally {
-        setIsLoading(false)
-      }
-    };
-  
-    getIngridients();
+    dispatch(getIngridients(ingridientsUrl));
 
   }, []);
 
+
   const burgerIngridientsSettings = [{
     title: "Булки",
-    type: "bun"
+    type: "bun",
+    ref: tabBun
     }, {
     title: "Соусы",
-    type: "sauce"
+    type: "sauce",
+    ref: tabSauce
     }, {
     title: "Начинки",
-    type: "main"
+    type: "main",
+    ref: tabMain
     }
   ]
 
@@ -117,7 +128,7 @@ function App() {
 
   burgerIngridientsSettings.forEach((burgerIngridientsItem) => {
     burgerIngridientsList.push(
-      <div key={burgerIngridientsItem.type}>
+      <div key={burgerIngridientsItem.type} ref={burgerIngridientsItem.ref}>
         <div className={appStyles.ingridients__headline}>
           <h1 className="text text_type_main-medium">{burgerIngridientsItem.title}</h1>
         </div>
@@ -127,7 +138,7 @@ function App() {
               <BurgerIngridients ingridient={ingridient}/> 
             </div> 
           ))}
-          {modalVisible && selectedIngridient && 
+          {isModalOpen && selectedIngridient && 
               <Modal header="Детали ингридиента" onClose={handleCloseModal}>
                 <IngridientDetails ingridient={ingridients.find(ing => (ing._id === selectedIngridient))}/>
               </Modal>}
@@ -144,41 +155,46 @@ function App() {
           <span className={headerStyles.menu__elem}><ListIcon type="primary" />Лента заказов</span>
         </AppHeader>
       </div>
-      <main className={appStyles.main__container}>
-        {hasError && 'Ошибка при загрузке данных...'}
-        {!hasError && !isLoading && ingridients.length && 
+      <DndProvider backend={HTML5Backend}>
+      <main className={appStyles.main__container}> 
+        {isOrderLoading && <div className={appStyles.loader_overlay}><div className={appStyles.loader}>
+          <Loader type="spinner-default" bgColor={'white'} color={'white'} size={50}/>
+          </div></div>}
+        {isFailed && 'Ошибка при загрузке данных...'}
+        {!isFailed && !isLoading && ingridients.length && 
         <>
         <div className={appStyles.container}>
           <div className={appStyles.ingridients__title}> 
             <h1 className="text text_type_main-large">Соберите бургер</h1>
           </div>
           
-          <div className={appStyles.ingridients__tab}>
-            <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+          <div className={appStyles.ingridients__tab} ref={tabContainer}>
+            <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
                 Булки
             </Tab>
-            <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+            <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
                 Соусы
             </Tab>
-            <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+            <Tab value="main" active={current === 'main'} onClick={setCurrent}>
                 Начинки
             </Tab>
           </div>
-          <div className={appStyles.ingridients}>
+          <div className={appStyles.ingridients} onScroll={handleScroll}>
             {burgerIngridientsList}
           </div>
         </div>
-
         <div className={appStyles.container}>
-          {modalVisible && isOrder && 
+          {isModalOpen && isOrder &&
           <Modal onClose={handleCloseModal}>
-              <OrderDetails order={order}/>
+              <OrderDetails order={orderDetails.order}/>
           </Modal>}
-          <BurgerConstructor ingridients={ingridients} onClick={hableOpenOrderModal}/>
+          <BurgerConstructor bun={constructorBun} ingridients={constructorIngridients} 
+            onClick={hableOpenOrderModal} onDrop={handleDrop} onDelete={handleDeleteIngridient}/>
         </div>
         </>
         }
-      </main>  
+      </main>
+      </DndProvider>  
     </div>
   );
 }
