@@ -1,32 +1,31 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
-import burgerIngridientsStyles from './burger-ingridients.module.css';
+import style from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components'
 
 
-function BurgerIngridients({ ingridient }) {
-    const itemId = ingridient['_id'];
+function BurgerIngredients({ ingredient }) {
+    const itemId = ingredient['_id'];
 
     const [, dragRef] = useDrag({
-        type: "ingridient",
+        type: "ingredient",
         item: {itemId}
     });
     
     return(
-        <div className={burgerIngridientsStyles.ingridient} ref={dragRef}>
-            <img src={ingridient.image}/>
-            <p className="text text_type_digits-default">{ingridient.price} <CurrencyIcon type="primary" /></p>
-            <p className="text text_type_main-small">{ingridient.name}</p>
-            {ingridient.__v > 0 &&
-                <Counter count={ingridient.__v} size="default" extraClass="m-1" />
+        <div className={style.ingredient} ref={dragRef}>
+            <img src={ingredient.image}/>
+            <p className="text text_type_digits-default">{ingredient.price} <CurrencyIcon type="primary" /></p>
+            <p className="text text_type_main-small">{ingredient.name}</p>
+            {ingredient.__v > 0 &&
+                <Counter count={ingredient.__v} size="default" extraClass="m-1" />
             }
         </div>          
     )
 }
 
-BurgerIngridients.propTypes = {
-    ingridient: PropTypes.shape({
+BurgerIngredients.propTypes = {
+    ingredient: PropTypes.shape({
         _id:  PropTypes.string,
         name: PropTypes.string.isRequired,
         type: PropTypes.string,
@@ -42,4 +41,4 @@ BurgerIngridients.propTypes = {
     }).isRequired
   } ; 
 
-export default BurgerIngridients
+export default BurgerIngredients

@@ -1,9 +1,9 @@
-export const OPEN_INGRIDIENT_MODAL = 'OPEN_INGRIDIENT_MODAL';
+export const OPEN_INGREDIENT_MODAL = 'OPEN_INGREDIENT_MODAL';
 export const OPEN_ORDER_MODAL = 'OPEN_ORDER_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 
-export function openIngridientModal(id) {
-    return { type: OPEN_INGRIDIENT_MODAL, 
+export function openIngredientModal(id) {
+    return { type: OPEN_INGREDIENT_MODAL, 
         payload: { id: id } }
 }
 

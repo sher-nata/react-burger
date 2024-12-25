@@ -1,0 +1,48 @@
+.wrapper{
+    background: #131316;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    position: absolute;
+    height: 478px;
+    width: 480px;
+    top: calc(50% - 478px/2);
+    left: calc(50% - 240px);
+    /*background-color: #131316;
+    border: 2px dashed #4C4CFF;*/
+}
+.edit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 374px;
+    width: 480px;   
+    gap: 24px;
+}
+.additional{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 480px;
+    height: 64px;
+    gap: 16px;
+    padding-top: 80px;
+}
+.additional_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 480px;
+    height: 24px;
+    gap: 8px;
+}
+.link{
+    text-decoration: none;
+    color: #4C4CFF;
+}
+.error{
+    color: crimson;
+    padding-left: 20px;
+}
