@@ -1,0 +1,8 @@
+.wrapper {
+    background-image: url("../images/404-error.png");
+    width: 100vw;
+    height: 100vh;
+    background-size: 20%;
+    background-position: center;
+    background-repeat: no-repeat;
+}

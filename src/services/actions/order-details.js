@@ -1,7 +1,8 @@
-import { appRequest } from '../../utils/request-utils';
+import { protectedAppRequest } from '../../utils/request-utils';
 import { openOrderModal } from "./modal";
-import { constructorClearIngridient } from "./burger-constructor";
-import { resetIngridients } from "./burger-ingridients";
+import { constructorClearIngredient } from "./burger-constructor";
+import { resetIngredients } from "./burger-ingredients";
+import { orderUrl } from '../../utils/global_const';
 
 export const SET_ORDER_REQUEST = 'SET_ORDER_REQUEST';
 export const SET_ORDER_SUCCESS = 'SET_ORDER_SUCCESS';
@@ -22,7 +23,7 @@ export function setOrderFailed(message) {
                 payload: { message: message }}
 }
 
-export const setOrder = (orderUrl, orderDetails) => async (dispatch) => {
+export const setOrder = (orderDetails) => async (dispatch) => {
 
     dispatch( setOrderRequest() );
     const options = { 
@@ -30,11 +31,11 @@ export const setOrder = (orderUrl, orderDetails) => async (dispatch) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({"ingredients": orderDetails})
     }
-    appRequest(orderUrl, options).then((data) => {
+    await protectedAppRequest(orderUrl, options).then((data) => {
         dispatch( setOrderSuccess(data) );
         dispatch( openOrderModal() );
-        dispatch( constructorClearIngridient() );
-        dispatch( resetIngridients() )
+        dispatch( constructorClearIngredient() );
+        dispatch( resetIngredients() )
       })
       .catch((error) => {
         if (error.name !== 'AbortError') {

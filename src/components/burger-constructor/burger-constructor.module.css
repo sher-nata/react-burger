@@ -39,11 +39,11 @@
     height: 64px;   
 }
 
-.other_ingridients{
+.other_ingredients{
     gap: 8px;
 }
 
-.container_other_ingridients{
+.container_other_ingredients{
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
@@ -69,7 +69,7 @@
       } 
 }
 
-.ingridient_bun{
+.ingredient_bun{
     margin-left: 22px;
 }
 

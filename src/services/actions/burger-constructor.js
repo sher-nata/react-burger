@@ -1,25 +1,25 @@
 import {v4 as uuidv4} from 'uuid';
 
-export const CONSTRUCTOR_ADD_INGRIDIENT = 'CONSTRUCTOR_ADD_INGRIDIENT';
-export const CONSTRUCTOR_DELETE_INGRIDIENT = 'CONSTRUCTOR_DELETE_INGRIDIENT';
-export const CONSTRUCTOR_MOVE_INGRIDIENT = 'CONSTRUCTOR_MOVE_INGRIDIENT';
-export const CONSTRUCTOR_CLEAR_INGRIDIENTS = 'CONSTRUCTOR_CLEAR_INGRIDIENTS';
+export const CONSTRUCTOR_ADD_INGREDIENT = 'CONSTRUCTOR_ADD_INGREDIENT';
+export const CONSTRUCTOR_DELETE_INGREDIENT = 'CONSTRUCTOR_DELETE_INGREDIENT';
+export const CONSTRUCTOR_MOVE_INGREDIENT = 'CONSTRUCTOR_MOVE_INGREDIENT';
+export const CONSTRUCTOR_CLEAR_INGREDIENTS = 'CONSTRUCTOR_CLEAR_INGREDIENTS';
 
-export function constructorAddIngridient(item) {
-    return { type: CONSTRUCTOR_ADD_INGRIDIENT,  
+export function constructorAddIngredient(item) {
+    return { type: CONSTRUCTOR_ADD_INGREDIENT,  
                 payload: { item: item, uniqueId: uuidv4() }}
 }
 
-export function constructorDeleteIngridient(index) {
-    return { type: CONSTRUCTOR_DELETE_INGRIDIENT, 
+export function constructorDeleteIngredient(index) {
+    return { type: CONSTRUCTOR_DELETE_INGREDIENT, 
                 payload: { index: index }}
 }
 
-export function constructorMoveIngridient(dragIndex, hoverIndex) {
-    return { type: CONSTRUCTOR_MOVE_INGRIDIENT,  
+export function constructorMoveIngredient(dragIndex, hoverIndex) {
+    return { type: CONSTRUCTOR_MOVE_INGREDIENT,  
                 payload: { dragIndex: dragIndex, hoverIndex: hoverIndex }}
 }
 
-export function constructorClearIngridient() {
-return { type: CONSTRUCTOR_CLEAR_INGRIDIENTS }
+export function constructorClearIngredient() {
+return { type: CONSTRUCTOR_CLEAR_INGREDIENTS }
 }

@@ -1,14 +1,14 @@
-import React, { useRef, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useRef, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from "react-dnd";
 import PropTypes from 'prop-types';
 import {v4 as uuidv4} from 'uuid';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { CurrencyIcon, DragIcon, Button, ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
-import { constructorMoveIngridient } from '../../services/actions/burger-constructor';
+import { constructorMoveIngredient } from '../../services/actions/burger-constructor';
 
 
-const IngridientsTotal = ({ total, onClick}) => {
+const IngredientsTotal = ({ total, onClick}) => {
     return (
         <>
             <div className={burgerConstructorStyles.total__price}>
@@ -22,20 +22,20 @@ const IngridientsTotal = ({ total, onClick}) => {
     );
 }; 
 
-IngridientsTotal.propTypes = {
+IngredientsTotal.propTypes = {
     total: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired
 }; 
 
-const ConstructorIngridient = ({ ingridient, index, onDelete}) => {
+const ConstructorIngredient = ({ ingredient, index, onDelete}) => {
 
     const ref = useRef(null);
-    const id = ingridient._id;
+    const id = ingredient._id;
 
     const dispatch = useDispatch();
 
     const [{ handlerId }, drop] = useDrop({
-        accept: "constructorIngridient",
+        accept: "constructorIngredient",
         collect(monitor) {
           return {
             handlerId: monitor.getHandlerId(),
@@ -62,14 +62,14 @@ const ConstructorIngridient = ({ ingridient, index, onDelete}) => {
             return
           }
           
-          moveContainerIngridient(dragIndex, hoverIndex)
+          moveContainerIngredient(dragIndex, hoverIndex)
 
           item.index = hoverIndex
         },
       })
 
     const [{ isDragging }, drag] = useDrag({
-    type: "constructorIngridient",
+    type: "constructorIngredient",
     item: () => {
         return { id, index }
     },
@@ -82,24 +82,24 @@ const ConstructorIngridient = ({ ingridient, index, onDelete}) => {
     drag(drop(ref))
 
 
-    const moveContainerIngridient = (dragIndex, hoverIndex) => {
-        dispatch(constructorMoveIngridient(dragIndex, hoverIndex))
+    const moveContainerIngredient = (dragIndex, hoverIndex) => {
+        dispatch(constructorMoveIngredient(dragIndex, hoverIndex))
     }
     
     return (
-        <div index={index} className={burgerConstructorStyles.other_ingridients} ref={ref}>
+        <div index={index} className={burgerConstructorStyles.other_ingredients} ref={ref}>
             <DragIcon type="primary" />
                 <ConstructorElement 
-                text={ingridient.name}
-                price={ingridient.price}
-                thumbnail={ingridient.image_mobile} 
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient.image_mobile} 
                 handleClose={() => onDelete(index)}/>
         </div>
     );
 }
 
-ConstructorIngridient.propTypes = {
-    ingridient: PropTypes.shape({
+ConstructorIngredient.propTypes = {
+    ingredient: PropTypes.shape({
         _id:  PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         type: PropTypes.string,
@@ -119,24 +119,24 @@ ConstructorIngridient.propTypes = {
 }; 
 
 
-function BurgerConstructor({bun=null, ingridients=[], onClick, onDrop, onDelete}) {
+function BurgerConstructor({bun=null, ingredients=[], onClick, onDrop, onDelete}) {
 
-    const getTotal = (bun, ingridients) => { return (bun ? bun.price * 2 : 0) + 
-        ((ingridients && ingridients.length > 0) ? ingridients.reduce((acc, ing) => acc + ing.price, 0) : 0)}
+    const getTotal = (bun, ingredients) => { return (bun ? bun.price * 2 : 0) + 
+        ((ingredients && ingredients.length > 0) ? ingredients.reduce((acc, ing) => acc + ing.price, 0) : 0)}
 
-    const total = useMemo(() => getTotal(bun, ingridients),[bun, ingridients]);
+    const total = useMemo(() => getTotal(bun, ingredients),[bun, ingredients]);
 
      const [, dropTarget] = useDrop({
-        accept: "ingridient",
+        accept: "ingredient",
         drop(itemId) {
             onDrop(itemId);
         },
     });
 
-    const otherIngridients = (ingridients && ingridients.length > 0) ? (ingridients.map((ing, index) => 
-        { return <ConstructorIngridient ingridient={ing} index={index} key={ing.uniqueId} onDelete={onDelete} /> })) :
+    const otherIngredients = (ingredients && ingredients.length > 0) ? (ingredients.map((ing, index) => 
+        { return <ConstructorIngredient ingredient={ing} index={index} key={ing.uniqueId} onDelete={onDelete} /> })) :
         ([ 
-            <div key='empty_ingridient' className={burgerConstructorStyles.ingridient_bun}>
+            <div key='empty_ingredient' className={burgerConstructorStyles.ingredient_bun}>
                 <div className={`${burgerConstructorStyles.empty_align} constructor-element`}>
                     <div className={burgerConstructorStyles.empty_align}>
                         <span>Выберите начинку</span>    
@@ -145,17 +145,17 @@ function BurgerConstructor({bun=null, ingridients=[], onClick, onDrop, onDelete}
             </div>
     ])       
 
-    const bunIngridient = ( top ) => {
+    const bunIngredient = ( top ) => {
         return (
             <>
                 {bun ?
-                (<div key={uuidv4()} className={burgerConstructorStyles.ingridient_bun}>
+                (<div key={uuidv4()} className={burgerConstructorStyles.ingredient_bun}>
                     <ConstructorElement type={top ? "top" : "bottom"} isLocked={true}
                     text={`${bun.name} ${top ? "(верх)" : "(низ)" }`}
                     price={bun.price}
                     thumbnail={bun.image_mobile} />
                 </div>) : 
-                (<div key={`'empty_bun_'${top ? 'top': 'bottom'}`} className={burgerConstructorStyles.ingridient_bun}>
+                (<div key={`'empty_bun_'${top ? 'top': 'bottom'}`} className={burgerConstructorStyles.ingredient_bun}>
                     <div className={`${burgerConstructorStyles.empty_align} constructor-element ${top ? "constructor-element_pos_top" : "constructor-element_pos_bottom"}`}>
                         <div className={burgerConstructorStyles.empty_align}>
                         <span>Выберите булку</span>    
@@ -170,22 +170,22 @@ function BurgerConstructor({bun=null, ingridients=[], onClick, onDrop, onDelete}
         <>
             <div className={burgerConstructorStyles.components} ref={dropTarget}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', height: '100%'}}>
-                    {bunIngridient(true)}
-                    <div className={burgerConstructorStyles.container_other_ingridients}>
-                        {otherIngridients}                
+                    {bunIngredient(true)}
+                    <div className={burgerConstructorStyles.container_other_ingredients}>
+                        {otherIngredients}                
                     </div>
-                    {bunIngridient(false)}
+                    {bunIngredient(false)}
                 </div>
             </div>
             <div className={burgerConstructorStyles.total}>
-                <IngridientsTotal total={total} onClick={onClick}/>
+                <IngredientsTotal total={total} onClick={onClick}/>
             </div>
         </>          
     );
 }
 
 BurgerConstructor.propTypes = {
-    ingridients: PropTypes.arrayOf(PropTypes.shape({
+    ingredients: PropTypes.arrayOf(PropTypes.shape({
         _id:  PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
