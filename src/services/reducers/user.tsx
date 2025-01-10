@@ -25,7 +25,7 @@ import {
   }
 
 
-export function userReducer(state = initialState, action){
+export function userReducer(state = initialState, action: IAction){
     switch (action.type) {
         case SET_LOGIN_REQUEST: {
             return { ...state, isLoginLoading: true, isLoginFailed: false, loginError: "" };

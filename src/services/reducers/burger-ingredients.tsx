@@ -6,14 +6,14 @@ import {
     DECREASE_INGREDIENTS,
     RESET_INGREDIENTS } from "../actions/burger-ingredients";
 
-const initialState = {
+const initialState: TIngridients = {
     ingredients: [], 
     isLoading: false, 
     isFailed: false
   }
 
 
-export function ingredientsReducer(state = initialState, action){
+export function ingredientsReducer(state = initialState, action: IAction){
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return { ...state, isLoading: true };
@@ -25,7 +25,8 @@ export function ingredientsReducer(state = initialState, action){
             return { ingredients: [], isFailed: true, isLoading: false };
         }
         case INCREASE_INGREDIENTS: {
-            const isBun = state.ingredients.find(ing => (ing._id === action.payload.id)).type === 'bun';
+            const isBun: boolean = action.payload != undefined && action.payload.id && typeof action.payload.id === 'string' ?
+                state.ingredients.find(ing => (ing._id === action.payload.id))?.type === 'bun': false;
             return { ...state, ingredients: [...state.ingredients].map(item =>
                 item._id === action.payload.id ? { ...item, __v: (item.type==='bun') ? 2 : (item.__v + 1) } : 
                 (isBun && item.type === 'bun') ? { ...item, __v: 0} : item

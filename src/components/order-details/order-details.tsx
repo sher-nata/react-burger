@@ -1,10 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import orderDetailsStyles from './order-details.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
+interface OrderDetailsProps {
+    order: {
+        number: number,
+    };
+};
 
-export default function OrderDetails({order}) {
+export default function OrderDetails({order}: OrderDetailsProps) {
     return(
         <div className={orderDetailsStyles.main_container}>
             <div className={orderDetailsStyles.order_number}>
@@ -22,8 +25,3 @@ export default function OrderDetails({order}) {
     )
 };
 
-OrderDetails.propTypes = {
-    order: PropTypes.shape({
-        number: PropTypes.number.isRequired,
-    }).isRequired
-};

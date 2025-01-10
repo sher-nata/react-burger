@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { setUserData } from '../../services/actions/user';
@@ -8,10 +7,9 @@ import styles from './profile.module.css'
 
 export default function Profile() {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate();
+    const dispatch = useDispatch<any>()
 
-    const authUser = useSelector(state => state.user.user)
+    const authUser = useSelector((state: TUserState) => state.user.user)
     const [valuesChanged, setvaluesChanged] = useState(false);
     const [form, setValue] = useState({name: "", email: "", password: '' });
 
@@ -21,22 +19,25 @@ export default function Profile() {
         }
     }, [authUser]);
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         setvaluesChanged(true)
     };
+    
 
-    const resetChanges = e => {
-        e.preventDefault();
-        setValue({name: authUser.name, email: authUser.email, password: '' });
+    const resetChanges = (e: React.BaseSyntheticEvent<Event, EventTarget & Element, EventTarget>) => {
+        e.preventDefault()
+        if (authUser){
+            setValue({name: authUser.name, email: authUser.email, password: '' });
+        }
         setvaluesChanged(false)
     }
 
-    const handleSubmit = useCallback(async (e) => {
+    const handleSubmit = useCallback(async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        await dispatch(setUserData(form))
+        dispatch(setUserData(form)) 
         setvaluesChanged(false)
-    }, [form])
+    }, [form, dispatch])
 
 return(
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -46,7 +47,9 @@ return(
                 value={form.name}
                 name={'name'}
                 placeholder="Имя"
-                icon="EditIcon"
+                icon="EditIcon" 
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
             />
             <EmailInput
                 onChange={onChange}

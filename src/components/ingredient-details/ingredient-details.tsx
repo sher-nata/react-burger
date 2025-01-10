@@ -6,7 +6,7 @@ import ingredientDetailsStyles from './ingredient-details.module.css';
 export default function IngredientDetails() {
     
     const { id } = useParams();
-    const ingredients = useSelector(state => state.ingredients.ingredients);
+    const ingredients = useSelector((state: TIngridientsState) => state.ingredients.ingredients);
     const ingredient = ingredients.find(ing => (ing._id === id))
 
     return(

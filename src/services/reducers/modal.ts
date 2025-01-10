@@ -4,18 +4,16 @@ import {
     CLOSE_MODAL } from "../actions/modal";
 
 const initialState = {
-    selectedIngridient: null,
     isModalOpen: false,
     isOrder: false
 }
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action: IAction) => {
     switch (action.type) {
       case OPEN_INGREDIENT_MODAL: {
         return {
             ...state,
             isModalOpen: true,
-            selectedIngredient: action.payload.id
         };
       }
       case OPEN_ORDER_MODAL: {
@@ -28,7 +26,6 @@ export const modalReducer = (state = initialState, action) => {
       case CLOSE_MODAL: {
         return {
           ...state,
-          selectedIngredient: null,
           isModalOpen: false,
           isOrder: false
         };

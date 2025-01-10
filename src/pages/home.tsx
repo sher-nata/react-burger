@@ -19,33 +19,33 @@ import { loginPage, ingredientDetailsPage } from '../utils/global_const';
 
 
 export function MainPage() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const navigate = useNavigate();
     const location = useLocation();
 
     const [current, setCurrent] = React.useState('bun')
   
-    const ingredients = useSelector(state => state.ingredients.ingredients);
-    const isFailed = useSelector(state => state.ingredients.isFailed);
-    const isLoading = useSelector(state => state.ingredients.isLoading);
+    const ingredients = useSelector((state: TIngridientsState) => state.ingredients.ingredients);
+    const isFailed = useSelector((state: TIngridientsState) => state.ingredients.isFailed);
+    const isLoading = useSelector((state: TIngridientsState) => state.ingredients.isLoading);
   
-    const isModalOpen = useSelector(state => state.modal.isModalOpen);
-    const isOrder = useSelector(state => state.modal.isOrder);
+    const isModalOpen = useSelector((state: TModalState) => state.modal.isModalOpen);
+    const isOrder = useSelector((state: TModalState) => state.modal.isOrder);
   
-    const constructorIngredients =  useSelector(state => state.constructor.ingredients);
-    const constructorBun =  useSelector(state => state.constructor.bun);
+    const constructorIngredients =  useSelector((state: TConstructorState) => state.constructor.ingredients);
+    const constructorBun =  useSelector((state: TConstructorState) => state.constructor.bun);
   
-    const orderDetails = useSelector(state => state.order.orderDetails);
-    const isOrderLoading = useSelector(state => state.order.isLoading)
+    const orderDetails = useSelector((state: TOrderState) => state.order.orderDetails);
+    const isOrderLoading = useSelector((state: TOrderState) => state.order.isLoading)
   
-    const authUser = useSelector(state => state.user.user)
+    const authUser = useSelector((state: TUserState) => state.user.user)
 
-    const tabContainer = useRef();
-    const tabBun = useRef();
-    const tabSauce = useRef();
-    const tabMain = useRef();
+    const tabContainer = useRef<HTMLDivElement>(null);
+    const tabBun = useRef<HTMLDivElement>(null);
+    const tabSauce = useRef<HTMLDivElement>(null);
+    const tabMain = useRef<HTMLDivElement>(null);
   
-    const hableOpenOrderModal = async (e) => {
+    const hableOpenOrderModal = async (e?: React.SyntheticEvent) => {
       if(constructorBun && constructorIngredients && constructorIngredients.length > 0) {
         await dispatch(getUserData)
         if (!authUser) {
@@ -65,39 +65,41 @@ export function MainPage() {
       }
     }
   
-    const handleOpenIngredientModal = e => {
+    const handleOpenIngredientModal = (e: React.BaseSyntheticEvent<Event, EventTarget & Element, EventTarget>) => {
       if (e) {
         e.stopPropagation();
       }
       navigate(`${ingredientDetailsPage}/${e.currentTarget.getAttribute('id')}`, {state: { background: location }})
     }
   
-    const handleCloseModal = e => {
+    const handleCloseModal = (e?: React.SyntheticEvent) => {
       dispatch( closeModal() );
       if (e) {
         e.stopPropagation();
       }
     }
   
-    const handleScroll = e =>{
-      const startTabPos = tabContainer.current.getBoundingClientRect().bottom;
-      const rectBun = tabBun.current.getBoundingClientRect();
-      const rectSauce = tabSauce.current.getBoundingClientRect();
-      const rectMain = tabMain.current.getBoundingClientRect();
-     
-      const tabs = ['bun', 'sauce', 'main']
-      const distance = [Math.abs(startTabPos - rectBun.top), Math.abs(startTabPos - rectSauce.top), Math.abs(startTabPos - rectMain.top)];
-      const smallest = distance.indexOf(Math.min(...distance))
-      setCurrent(tabs[smallest])
+    const handleScroll = () =>{
+      if(tabContainer.current && tabBun.current && tabSauce.current && tabMain.current) { 
+        const startTabPos: number = tabContainer.current.getBoundingClientRect().bottom;
+        const rectBun = tabBun.current.getBoundingClientRect();
+        const rectSauce = tabSauce.current.getBoundingClientRect();
+        const rectMain = tabMain.current.getBoundingClientRect();
+      
+        const tabs = ['bun', 'sauce', 'main']
+        const distance = [Math.abs(startTabPos - rectBun.top), Math.abs(startTabPos - rectSauce.top), Math.abs(startTabPos - rectMain.top)];
+        const smallest = distance.indexOf(Math.min(...distance))
+        setCurrent(tabs[smallest])
+      }
     }
   
-    const handleDrop = (itemId) => {
+    const handleDrop = (itemId: {itemId: string}) => {
       const item = ingredients.find(ing => (ing._id === itemId.itemId));
       dispatch(constructorAddIngredient(item));
       dispatch(increaseIngredient(itemId.itemId));
     };
   
-    const handleDeleteIngredient = (index) => {
+    const handleDeleteIngredient = (index: number) => {
       const itemId = constructorIngredients[index]._id;
       dispatch(constructorDeleteIngredient(index));
       dispatch(decreaseIngredient(itemId));
@@ -119,7 +121,7 @@ export function MainPage() {
       }
     ]
   
-    const burgerIngredientsList = [];
+    const burgerIngredientsList: React.ReactNode[] = [];
   
     burgerIngredientsSettings.forEach((burgerIngredientsItem) => {
       burgerIngredientsList.push(

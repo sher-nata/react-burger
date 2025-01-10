@@ -4,7 +4,11 @@ import headerStyles from './app-header.module.css';
 import { Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { profilePage } from '../../utils/global_const';
 
-function AppHeader(props) {
+interface IHeaderProps {
+    children: React.ReactNode;
+};
+
+function AppHeader(props: IHeaderProps) {
     return (
         <header className={headerStyles.menu}>
             <div className={headerStyles.menu__content}>

@@ -13,18 +13,18 @@ export function ResetPasswordPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const authUser = useSelector(state => state.user.user)
+    const authUser = useSelector((state: TUserState) => state.user.user)
 
     const [isLoading, setLoading] = useState(false);
     const [form, setValue] = useState({ password: '', token: '' });
     const [error, setError] = useState('');
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         if (error) setError('')
     };
 
-    const handleSubmit = useCallback( async (e) => {
+    const handleSubmit = useCallback( async (e: React.SyntheticEvent) => {
         e.preventDefault();
         setLoading(true)
         await resetPassword(form)
@@ -71,6 +71,8 @@ export function ResetPasswordPage() {
                             name={'token'}
                             placeholder="Введите код из письма"
                             required={true}
+                            onPointerEnterCapture={undefined}
+                            onPointerLeaveCapture={undefined}
                         />
                         {error && <p className={styles.error}>{error}</p>}
                     </div>

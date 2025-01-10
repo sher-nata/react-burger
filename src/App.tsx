@@ -24,7 +24,7 @@ import { homePage, loginPage, registerPage, ordersFeedPage, ordersHistoryPage,
 
 export default function App() {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,7 +33,6 @@ export default function App() {
   const handleCloseModal = () => navigate(-1)
 
   useEffect(()=>{
-  
     dispatch(getIngredients());
 
   }, [dispatch]);

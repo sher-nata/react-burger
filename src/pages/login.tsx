@@ -10,14 +10,13 @@ import AppLoader from '../components/loader/loader'
 
 export function LoginPage() {
     
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<any>()
     const navigate = useNavigate();
     const location = useLocation();
 
-    const authUser = useSelector(state => state.user.user)
-    const isFailed = useSelector(state => state.user.isLoginFailed)
-    const isLoading = useSelector(state => state.user.isLoginLoading)
-    const loginError =  useSelector(state => state.user.loginError)
+    const authUser = useSelector((state: TUserState) => state.user.user)
+    const isLoading = useSelector((state: TUserState) => state.user.isLoginLoading)
+    const loginError =  useSelector((state: TUserState) => state.user.loginError)
     const [form, setValue] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
 
@@ -25,16 +24,16 @@ export function LoginPage() {
         setError(loginError);
     }, [loginError]);
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         setError('')
     };
 
-    const handleSubmit = useCallback( async (e) => {
+    const handleSubmit = useCallback( async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await dispatch(signIn(form))
     },
-    [form]
+    [form, dispatch]
     )
 
     if (authUser) {

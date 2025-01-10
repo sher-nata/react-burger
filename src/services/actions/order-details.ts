@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { protectedAppRequest } from '../../utils/request-utils';
 import { openOrderModal } from "./modal";
 import { constructorClearIngredient } from "./burger-constructor";
@@ -13,17 +14,17 @@ export function setOrderRequest() {
     return { type: SET_ORDER_REQUEST }
 }
 
-export function setOrderSuccess(data) {
+export function setOrderSuccess(data: IOrderData) {
     return { type: SET_ORDER_SUCCESS,
                 payload: { order: data }}
 }
 
-export function setOrderFailed(message) {
+export function setOrderFailed(message: string) {
     return { type: SET_ORDER_FAILED,
                 payload: { message: message }}
 }
 
-export const setOrder = (orderDetails) => async (dispatch) => {
+export const setOrder = (orderDetails: string[]) => async (dispatch: Dispatch<any>) => {
 
     dispatch( setOrderRequest() );
     const options = { 

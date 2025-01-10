@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './register.module.css';
 import { setRegister } from '../services/actions/user';
@@ -10,33 +10,32 @@ import AppLoader from '../components/loader/loader'
 
 export function RegisterPage() {
     
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<any>()
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const authUser = useSelector(state => state.user.user)
-    const isLoading = useSelector(state => state.user.isRegisterLoading)
-    const isFailed = useSelector(state => state.user.isRegisterFailed)
-    const registerError = useSelector(state => state.user.registerError)
+    const authUser = useSelector((state: TUserState) => state.user.user)
+    const isLoading = useSelector((state: TUserState) => state.user.isRegisterLoading)
+    const isFailed = useSelector((state: TUserState) => state.user.isRegisterFailed)
+    const registerError = useSelector((state: TUserState) => state.user.registerError)
     const [form, setValue] = useState({ name: '', email: '', password: '' });
     const [error, setError] = useState('');
 
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         if (error) setError('')
     };
 
-    const handleSubmit = useCallback( async (e) => {
+    const handleSubmit = useCallback( async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await dispatch(setRegister(form))
-    }, [form]
+    }, [form, dispatch]
     )
 
     useEffect(()=>{
         console.log('isFailed: ', isFailed)
         setError(registerError);
-    }, [registerError]);
+    }, [registerError, isFailed]);
     
     if (authUser) {
         navigate(homePage, {replace: true})    
@@ -55,6 +54,8 @@ export function RegisterPage() {
                         extraClass="mb-2"
                         onChange={onChange}
                         required={true}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
                     />
                     <EmailInput
                         value={form.email}

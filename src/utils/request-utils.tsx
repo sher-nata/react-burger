@@ -3,14 +3,28 @@ import { baseUrl, refreshTokenUrl, forgotPasswordUrl, resetPasswordUrl } from ".
 
 const localStoragePrefix = 'react-burger/'
 
+
+interface CustomResponse{
+  readonly ok: boolean;
+  readonly headers?: Headers;
+  readonly redirected?: boolean;
+  readonly status: number;
+  readonly statusText: string;
+  readonly type?: ResponseType;
+  readonly url?: string;
+  clone(): Response;
+  json(): Promise<any>;
+
+}
+
 class AppError extends Error {
-    constructor(data) {
-       super(data.message);
-       this.status = data.status;
+    constructor(message: string, public status: number) {
+       super(message);
+       this.status = status;
     }
 }
 
-export const checkResponse = async (response) => {
+export const checkResponse = async (response: CustomResponse) => {
     if (!response.ok) {
       let errorMessage = null
       try {
@@ -18,12 +32,12 @@ export const checkResponse = async (response) => {
         errorMessage = errorData.message
       }
       catch (e) {}  
-      throw new AppError({message: `Ошибка: ${errorMessage ? errorMessage : response.status}`, status: response.status});
+      throw new AppError(`Ошибка: ${errorMessage ? errorMessage : response.status}`, response.status);
     }
     return response;
 }
 
-export const protectedAppRequest = async (url, {...options}={}) => {
+export const protectedAppRequest = async (url: string, {...options}: Record<string, {}>={}) => {
     try{
         await refreshAccessToken()
     }
@@ -38,7 +52,7 @@ export const protectedAppRequest = async (url, {...options}={}) => {
   }
 
 
-export const appRequest = async (url, {...options}={}) => {
+export const appRequest = async (url: string, {...options}={}) => {
     const controller = new AbortController();
     const fetchOptions = {...options, 'signal': controller.signal}; 
     
@@ -47,12 +61,12 @@ export const appRequest = async (url, {...options}={}) => {
 
   }
 
-  const isTokenExpired = (token) => {
+  const isTokenExpired = (token: string) => {
     if (!token) return true;
     try {
       const decodedToken = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-      return decodedToken.exp < currentTime;
+      return decodedToken.exp ? decodedToken.exp < currentTime : true;
     } catch (error) {
       console.error('Error decoding token:', error);
       return true;
@@ -62,7 +76,7 @@ export const appRequest = async (url, {...options}={}) => {
   const refreshAccessToken = async() =>{
     
     let accessToken = getAccessToken()
-    if (!accessToken || accessToken && isTokenExpired(accessToken)){
+    if (!accessToken || (accessToken && isTokenExpired(accessToken))){
         removeAccessToken()
     }   
     else {  
@@ -84,7 +98,7 @@ export const appRequest = async (url, {...options}={}) => {
       })
   }
 
-  export const forgotPassword = async ( email ) => {
+  export const forgotPassword = async ( email: string ) => {
 
     const options = { 
         method: 'POST',
@@ -96,7 +110,7 @@ export const appRequest = async (url, {...options}={}) => {
       })
   };
 
-  export const resetPassword = async ( form ) => {
+  export const resetPassword = async ( form: {password: string; token: string} ) => {
 
     const options = { 
         method: 'POST',
@@ -109,7 +123,7 @@ export const appRequest = async (url, {...options}={}) => {
   };
 
 /**************************************/
-/* local stogage */
+/* local storage */
 
 export const getRefreshToken = () => {
     return (localStorage.getItem(localStoragePrefix + 'refreshToken') || null)
@@ -131,15 +145,15 @@ export const clearLocalStorage = () => {
     localStorage.clear();
 }
 
-export const setlocalStorageItem = ( itemName, itemValue ) => {
+export const setlocalStorageItem = ( itemName: string, itemValue: string ) => {
     localStorage.setItem(localStoragePrefix + itemName, itemValue);  
 }
 
-export const getlocalStorageItem = ( itemName ) => {
+export const getlocalStorageItem = ( itemName: string ) => {
     return (localStorage.getItem(localStoragePrefix + itemName) || null)
 }
 
-export const removelocalStorageItem = ( itemName ) => {
+export const removelocalStorageItem = ( itemName: string ) => {
     localStorage.removeItem(localStoragePrefix + itemName);  
 }
 

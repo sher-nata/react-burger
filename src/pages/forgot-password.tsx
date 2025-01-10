@@ -17,12 +17,12 @@ export function ForgotPasswordPage() {
     const [form, setValue] = useState({ email: '' });
     const [error, setError] = useState('');
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         if (error) setError('')
     };
 
-    const handleSubmit = useCallback( async (e) => {
+    const handleSubmit = useCallback( async (e: React.SyntheticEvent) => {
         e.preventDefault();
         setLoading(true)
         await forgotPassword(form.email)
