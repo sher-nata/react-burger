@@ -1,14 +1,39 @@
 import { useRef, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from "react-dnd";
-import PropTypes from 'prop-types';
 import {v4 as uuidv4} from 'uuid';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { CurrencyIcon, DragIcon, Button, ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components'
 import { constructorMoveIngredient } from '../../services/actions/burger-constructor';
 
 
-const IngredientsTotal = ({ total, onClick}) => {
+interface IBurgerConstructorProps {
+    ingredients?: IConstructorBurgerIngredient[];
+    bun?: IBurgerIngredient | null;
+    onClick: ((e?: React.SyntheticEvent) => void);
+    onDrop(itemId: {itemId: string}): void;
+    onDelete(index: number): void;
+  };
+
+
+interface ITotalProps {
+    bun?: IBurgerIngredient | null;
+    ingredients?: ReadonlyArray<IConstructorBurgerIngredient>;
+};
+
+interface IIngredientsTotalProps {
+    total: number;
+    onClick: ((e?: React.SyntheticEvent) => void);
+};
+
+interface IConstructorIngredientProps {
+    ingredient: IConstructorBurgerIngredient;
+    index: number;
+    onDelete(index:number): void;
+};
+
+
+const IngredientsTotal = ({ total, onClick}: IIngredientsTotalProps) => {
     return (
         <>
             <div className={burgerConstructorStyles.total__price}>
@@ -22,14 +47,10 @@ const IngredientsTotal = ({ total, onClick}) => {
     );
 }; 
 
-IngredientsTotal.propTypes = {
-    total: PropTypes.number.isRequired,
-    onClick: PropTypes.func.isRequired
-}; 
 
-const ConstructorIngredient = ({ ingredient, index, onDelete}) => {
+const ConstructorIngredient = ({ ingredient, index, onDelete }: IConstructorIngredientProps) => {
 
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
     const id = ingredient._id;
 
     const dispatch = useDispatch();
@@ -41,7 +62,7 @@ const ConstructorIngredient = ({ ingredient, index, onDelete}) => {
             handlerId: monitor.getHandlerId(),
           }
         },
-        hover(item, monitor) {
+        hover(item: {index: number; id: string} | any, monitor) {
           if (!ref.current) {
             return
           }
@@ -51,10 +72,9 @@ const ConstructorIngredient = ({ ingredient, index, onDelete}) => {
             return
           }
           const hoverBoundingRect = ref.current?.getBoundingClientRect()
-          const hoverMiddleY =
-            (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+          const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
           const clientOffset = monitor.getClientOffset()
-          const hoverClientY = clientOffset.y - hoverBoundingRect.top
+          const hoverClientY = clientOffset ? clientOffset.y - hoverBoundingRect.top: 0
           if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
             return
           }
@@ -82,12 +102,12 @@ const ConstructorIngredient = ({ ingredient, index, onDelete}) => {
     drag(drop(ref))
 
 
-    const moveContainerIngredient = (dragIndex, hoverIndex) => {
+    const moveContainerIngredient = (dragIndex: number, hoverIndex: number) => {
         dispatch(constructorMoveIngredient(dragIndex, hoverIndex))
     }
     
     return (
-        <div index={index} className={burgerConstructorStyles.other_ingredients} ref={ref}>
+        <div data-index={index} className={burgerConstructorStyles.other_ingredients} ref={ref}>
             <DragIcon type="primary" />
                 <ConstructorElement 
                 text={ingredient.name}
@@ -98,37 +118,17 @@ const ConstructorIngredient = ({ ingredient, index, onDelete}) => {
     );
 }
 
-ConstructorIngredient.propTypes = {
-    ingredient: PropTypes.shape({
-        _id:  PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,   
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string.isRequired,
-        image_large: PropTypes.string,
-        __v: PropTypes.number,
-        uniqueId: PropTypes.string,
-        }).isRequired,
-    index: PropTypes.number.isRequired,
-    onDelete: PropTypes.func.isRequired
-}; 
 
+export default function BurgerConstructor({bun=undefined, ingredients=[], onClick, onDrop, onDelete}: IBurgerConstructorProps) {
 
-function BurgerConstructor({bun=null, ingredients=[], onClick, onDrop, onDelete}) {
-
-    const getTotal = (bun, ingredients) => { return (bun ? bun.price * 2 : 0) + 
+    const getTotal = ({ bun, ingredients }: ITotalProps) => { return (bun ? bun.price * 2 : 0) + 
         ((ingredients && ingredients.length > 0) ? ingredients.reduce((acc, ing) => acc + ing.price, 0) : 0)}
 
-    const total = useMemo(() => getTotal(bun, ingredients),[bun, ingredients]);
+    const total = useMemo(() => getTotal({ bun, ingredients }),[bun, ingredients]);
 
      const [, dropTarget] = useDrop({
         accept: "ingredient",
-        drop(itemId) {
+        drop(itemId: {itemId: string}) {
             onDrop(itemId);
         },
     });
@@ -145,7 +145,7 @@ function BurgerConstructor({bun=null, ingredients=[], onClick, onDrop, onDelete}
             </div>
     ])       
 
-    const bunIngredient = ( top ) => {
+    const bunIngredient = ( top: boolean ) => {
         return (
             <>
                 {bun ?
@@ -184,39 +184,3 @@ function BurgerConstructor({bun=null, ingredients=[], onClick, onDrop, onDelete}
     );
 }
 
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape({
-        _id:  PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,   
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string.isRequired,
-        image_large: PropTypes.string,
-        __v: PropTypes.number,
-        uniqueId: PropTypes.string.isRequired,
-        })),
-    bun: PropTypes.shape({
-        _id:  PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,   
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string.isRequired,
-        image_large: PropTypes.string,
-        __v: PropTypes.number,
-        }),
-    onClick: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
-}; 
-
-export default BurgerConstructor

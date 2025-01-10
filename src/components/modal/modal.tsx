@@ -1,15 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import ReactDOM from "react-dom";
-import PropTypes from 'prop-types';
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
 
-const modalRoot = document.getElementById("modals");
+interface IModalProps {
+    header?: string;
+    onClose:((e?: React.SyntheticEvent) => void);
+    children: React.ReactNode;
+};
+
+interface IModalHeaderProps {
+    header: string;
+    onClose: ((e?: React.SyntheticEvent) => void);
+};
+
+const modalRoot = document.getElementById("modals") as HTMLInputElement;
 
 
-const ModalHeader = ({ header, onClose }) => {
+const ModalHeader = ({ header, onClose }: IModalHeaderProps) => {
     return (
         <>
             <div className={modalStyles.header}>
@@ -22,23 +32,18 @@ const ModalHeader = ({ header, onClose }) => {
     );
 }; 
 
-ModalHeader.propTypes = {
-    header: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired
-};
-
-export default function Modal ({header="", onClose, children}) {
+const Modal: FC<IModalProps>= ({header="", onClose, children}) => {
     
     useEffect(() => {
-        const handleEscapePress = (e) => {
+        const handleEscapePress = (e: KeyboardEvent) => {
           if(e.key === "Escape"){
             onClose()
           }
         }
         window.addEventListener('keydown', handleEscapePress)
-      return () => {
-        window.removeEventListener('keydown', handleEscapePress)
-      }
+        return () => {
+            window.removeEventListener('keydown', handleEscapePress)
+        }
     },[])
 
     return ReactDOM.createPortal(
@@ -56,8 +61,4 @@ export default function Modal ({header="", onClose, children}) {
 
 };
 
-Modal.propTypes = {
-    header: PropTypes.string,
-    onClose: PropTypes.func.isRequired,
-    children: PropTypes.any
-};
+export default Modal

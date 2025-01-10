@@ -11,11 +11,11 @@ const userDataUrl = 'auth/user'
 
 export function ProfilePage() {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<any>()
     const navigate = useNavigate();
 
-    const authUser = useSelector(state => state.user.user)
-    const isUserLoading = useSelector(state => state.user.isUserLoading)
+    const authUser = useSelector((state: TUserState) => state.user.user)
+    const isUserLoading = useSelector((state: TUserState) => state.user.isUserLoading)
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -24,11 +24,11 @@ export function ProfilePage() {
     }, [isUserLoading]);
 
 
-    const handleSignOut = async (e) => {
+    const handleSignOut = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await dispatch(signOut())
         if (!authUser){
-            navigate({loginPage}, { replace: true })
+            navigate(loginPage, { replace: true })
         }
     }
 
@@ -48,7 +48,7 @@ export function ProfilePage() {
                         </NavLink>
                     </div>
                     <div className={styles.navigation_frame}>
-                        <NavLink onClick={handleSignOut}>
+                        <NavLink to={loginPage} onClick={handleSignOut}>
                             <p className="text text_type_main-medium">Выход</p>
                         </NavLink>
                     </div>

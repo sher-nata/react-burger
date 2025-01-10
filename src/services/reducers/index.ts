@@ -7,16 +7,30 @@ import { constructorReducer } from './burger-constructor';
 import { orderReducer } from './order-details';
 import { userReducer } from './user';
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+  const composeEnhancers =
+    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      : compose;
+    
+
+interface IInitialState {
+  ingredients: TIngridients;
+  constructor: TConstructor;
+  order: TOrder;
+  modal: TModal;
+  user: TUser;
+}
 
 const InitialState = {
   ingredients: {ingredients: [], isLoading: false, isFailed: false},
   constructor: {bun: null, ingredients: []},
   order: { orderDetails: {}, isLoading: false, isFailed: false},
-  modal: {selectedIngredient: null, isModalOpen: false, isOrder: false},
+  modal: {isModalOpen: false, isOrder: false},
   user: {user: null,
     loginError: "",
     isLoginLoading: false, 

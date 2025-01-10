@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import { appRequest } from '../../utils/request-utils';
 import { ingredientsUrl } from '../../utils/global_const';
 
@@ -13,24 +14,24 @@ export function getIngredientRequest() {
     return { type: GET_INGREDIENTS_REQUEST }
 }
 
-export function getIngredientSuccess(data) {
+export function getIngredientSuccess(data: IBurgerIngredient[]) {
     return { type: GET_INGREDIENTS_SUCCESS,
             payload: { ingredients: data }
      }
 }
 
-export function getIngredientFailed(message) {
+export function getIngredientFailed(message: string) {
     return { type: GET_INGREDIENTS_FAILED,
             payload: { message: message }
      }
 }
 
-export function increaseIngredient(itemId) {
+export function increaseIngredient(itemId: string) {
     return { type: INCREASE_INGREDIENTS,  
                 payload: { id: itemId }}
 }
 
-export function decreaseIngredient(itemId) {
+export function decreaseIngredient(itemId: string) {
     return { type: DECREASE_INGREDIENTS,  
                 payload: { id: itemId }}
 }
@@ -41,7 +42,7 @@ export function resetIngredients() {
 
 
 
-export const getIngredients = () => (dispatch) => {
+export const getIngredients = () => (dispatch: Dispatch<any>) => {
 
     dispatch( getIngredientRequest() );
 
