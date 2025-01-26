@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux'; 
 import { appRequest, protectedAppRequest, getRefreshToken, 
     setlocalStorageItem, clearLocalStorage } from '../../utils/request-utils';
 import { registerUrl, loginUrl, userDataUrl, logoutUrl } from '../../utils/global_const';
@@ -17,19 +18,35 @@ export const SET_USER_FAILED = 'SET_USER_FAILED';
 
 export const SET_LOGOUT_SUCCESS = 'SET_LOGOUT_SUCCESS';
 
+interface IUserData{
+    email: string; 
+    name: string
+};
+
+interface ILoginData{
+    email: string; 
+    password: string;
+};
+
+interface IRegisterData {
+    email: string; 
+    name: string; 
+    password: string;
+};
+
 
 export function setLoginRequest() {
   return { type: SET_LOGIN_REQUEST }
 }
 
-export function setLoginSuccess(data) {
+export function setLoginSuccess(data: IUserData) {
   return {
     type: SET_LOGIN_SUCCESS,
     payload: { user: data }
   }
 }
 
-export function setLoginFailed(message) {
+export function setLoginFailed(message: string) {
   return {
     type: SET_LOGIN_FAILED,
     payload: { error: message }
@@ -41,14 +58,14 @@ export function setRegisterRequest() {
   return { type: SET_REGISTER_REQUEST }
 }
 
-export function setRegisterSuccess(data) {
+export function setRegisterSuccess(data: IUserData) {
   return {
     type: SET_REGISTER_SUCCESS,
     payload: { user: data }
   }
 }
 
-export function setRegisterFailed(message) {
+export function setRegisterFailed(message: string) {
   return {
     type: SET_REGISTER_FAILED,
     payload: { error: message }
@@ -60,14 +77,14 @@ export function setUserRequest() {
   return { type: SET_USER_REQUEST }
 }
 
-export function setUserSuccess(data) {
+export function setUserSuccess(data: IUserData) {
   return {
     type: SET_USER_SUCCESS,
     payload: { user: data }
   }
 }
 
-export function setUserFailed(message) {
+export function setUserFailed(message: string) {
   return {
     type: SET_USER_FAILED,
     payload: { error: message }
@@ -75,12 +92,12 @@ export function setUserFailed(message) {
 }
 
 
-export function setLogoutSuccess(data) {
+export function setLogoutSuccess() {
   return { type: SET_LOGOUT_SUCCESS }
 }
 
 
-export const setRegister = (form) => async (dispatch) => {
+export const setRegister = (form: IRegisterData) => async (dispatch: Dispatch<any>) => {
 
   dispatch(setRegisterRequest());
   const options = {
@@ -102,7 +119,7 @@ export const setRegister = (form) => async (dispatch) => {
 
 };
 
-export const signIn = (form) => async (dispatch) => {
+export const signIn = (form: ILoginData) => async (dispatch: Dispatch<any>) => {
 
   dispatch(setLoginRequest());
   const options = {
@@ -124,7 +141,7 @@ export const signIn = (form) => async (dispatch) => {
 
 };
 
-export const signOut = () => async (dispatch) => {
+export const signOut = () => async (dispatch: Dispatch<any>) => {
 
   const token = getRefreshToken()
 
@@ -147,7 +164,7 @@ export const signOut = () => async (dispatch) => {
 
 };
 
-export const getUserData = () => async (dispatch) => {
+export const getUserData = () => async (dispatch: Dispatch) => {
 
   const refreshToken = getRefreshToken()
   if (!refreshToken) {
@@ -169,7 +186,7 @@ export const getUserData = () => async (dispatch) => {
     });
 };
 
-export const setUserData = (form) => async (dispatch) => {
+export const setUserData = (form: IRegisterData) => async (dispatch: Dispatch<any>) => {
 
   dispatch(setUserRequest());
   const options = {

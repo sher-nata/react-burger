@@ -11,7 +11,7 @@ const initialState = {
   }
 
 
-export function constructorReducer(state = initialState, action){
+export function constructorReducer(state = initialState, action: IAction){
     switch (action.type) {
         case CONSTRUCTOR_ADD_INGREDIENT: {
            if (action.payload.item.type === 'bun'){

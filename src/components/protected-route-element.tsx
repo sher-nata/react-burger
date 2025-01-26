@@ -1,22 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserData } from '../services/actions/user';
-import { loginPage, homePage } from '../utils/global_const';
+import { loginPage } from '../utils/global_const';
 import AppLoader from './loader/loader';
 
 
-export const ProtectedRouteElement = ({ onlyUnAuth=false, element }) => {
+interface IProtectedRouteElementProps {
+    onlyUnAuth?: boolean;
+    element: JSX.Element;
+}
+
+export const ProtectedRouteElement = ({ onlyUnAuth=false, element }: IProtectedRouteElementProps) => {
 
     const location = useLocation();
-    const dispatch = useDispatch();
-    const authUser = useSelector(state => state.user.user)
-    const isLoading = useSelector(state => state.user.isUserLoading)
-    const [isLoaded, setIsLoaded] = useState(false);
+    const dispatch = useDispatch<any>();
+    const authUser = useSelector((state : TUserState) => state.user.user)
+    const isLoading = useSelector((state : TUserState) => state.user.isUserLoading)
 
     const init = async () => {
         await dispatch(getUserData());
-        setIsLoaded(true)
     };
 
     useEffect(() => {

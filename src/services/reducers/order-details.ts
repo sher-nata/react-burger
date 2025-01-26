@@ -11,7 +11,7 @@ import {
   }
 
 
-export function orderReducer(state = initialState, action){
+export function orderReducer(state = initialState, action: IAction){
     switch (action.type) {
         case SET_ORDER_REQUEST: {
             return { ...state, isLoading: true };
