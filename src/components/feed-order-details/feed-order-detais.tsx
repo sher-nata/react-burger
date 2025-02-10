@@ -40,13 +40,13 @@ export default function FeedOrderDetails({ isModal = false }: FeedElementProps) 
         if (forder) {
             setOrder(forder)
         }
-        if (!order) {
+        if (!forder) {
             forder = feed_history?.orders.find(order => (order.number === Number(number)))
             if (forder) {
                 setOrder(forder)
             }
         }
-        if (!order && number) {
+        if (!forder && number) {
             getOrder(number)
         }
     }, []);
@@ -66,24 +66,25 @@ export default function FeedOrderDetails({ isModal = false }: FeedElementProps) 
     {
         if (ingredients_count) {
             for (const [ing_id, ing_count] of Object.entries(ingredients_count)) {
+                if(trunc_ingredients[ing_id]){
+                    total_price = total_price + trunc_ingredients[ing_id].price * ing_count
 
-                total_price = total_price + trunc_ingredients[ing_id].price * ingredients_count[ing_id]
-
-                order_ingredients_list.push(
-                    <div key={ing_id} className={styles.order_ingredient}>
-                        <div className={styles.order_ingredient_preview}>
-                            <div className={styles.order_ingredient_illustration}>
-                                <img src={trunc_ingredients[ing_id].image_mobile} />
+                    order_ingredients_list.push(
+                        <div key={ing_id} className={styles.order_ingredient}>
+                            <div className={styles.order_ingredient_preview}>
+                                <div className={styles.order_ingredient_illustration}>
+                                    <img src={trunc_ingredients[ing_id].image_mobile} />
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.order_ingredient_name}>
-                            <p className="text text_type_main-default">{trunc_ingredients[ing_id].name}</p>
-                        </div>
-                        <div className={styles.order_ingredient_price}>
-                            <p className="text text_type_main-medium">{ing_count} x {trunc_ingredients[ing_id].price}</p>
-                            <p className="text, text_type_digits-default"><CurrencyIcon type="primary" /></p>
-                        </div>
-                    </div>)
+                            <div className={styles.order_ingredient_name}>
+                                <p className="text text_type_main-default">{trunc_ingredients[ing_id].name}</p>
+                            </div>
+                            <div className={styles.order_ingredient_price}>
+                                <p className="text text_type_main-medium">{ing_count} x {trunc_ingredients[ing_id].price}</p>
+                                <p className="text, text_type_digits-default"><CurrencyIcon type="primary" /></p>
+                            </div>
+                        </div>)
+                }
             }
         }
     }

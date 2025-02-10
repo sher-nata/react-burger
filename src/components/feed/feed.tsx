@@ -40,27 +40,29 @@ export const FeedElement = ({ order, trunc_ingredients, page_url, display_status
 
 
     {order.ingredients.forEach((ing_id) => {
-        total_price = total_price + trunc_ingredients[ing_id].price
-        const imgStyle = {
-            position: count == 0 ? 'relative' : 'absolute',
-            left: `${count*left_shift}px`,
-            zIndex: max_ing_count - count 
-          }
-        if (count <= 5){
-            order_ingredients_list.push(
-             //@ts-ignore
-             <div key={uuidv4()} className={styles.order_ingredient_preview} style={imgStyle} >
-                <div className={styles.order_ingredient_illustration}>
-                    <img src={trunc_ingredients[ing_id].image_mobile}/>
-                </div>
-                {(count == 5 && over_ingredients > 0) && 
-                <div className={styles.number_over_ingredients}>
-                    <p className="text text_type_digits-default">+{over_ingredients}</p>
-                </div>}
-            </div>)
+        if(trunc_ingredients[ing_id]){
+            total_price = total_price + trunc_ingredients[ing_id].price
+            const imgStyle = {
+                position: count == 0 ? 'relative' : 'absolute',
+                left: `${count*left_shift}px`,
+                zIndex: max_ing_count - count 
+            }
+            if (count <= 5){
+                order_ingredients_list.push(
+                //@ts-ignore
+                <div key={count} className={styles.order_ingredient_preview} style={imgStyle} >
+                    <div className={styles.order_ingredient_illustration}>
+                        <img src={trunc_ingredients[ing_id].image_mobile}/>
+                    </div>
+                    {(count == 5 && over_ingredients > 0) && 
+                    <div className={styles.number_over_ingredients}>
+                        <p className="text text_type_digits-default">+{over_ingredients}</p>
+                    </div>}
+                </div>)
+            }
+            count += 1
         }
-         count += 1
-        })}
+    })}
 
     
     return (
@@ -103,7 +105,7 @@ export function FeedOrder( { orders, trunc_ingredients, page_url, display_status
         orders.forEach((order) => {
 
             orderList.push(
-                <FeedElement key={order.number} order={order} trunc_ingredients={trunc_ingredients} 
+                <FeedElement key={order._id} order={order} trunc_ingredients={trunc_ingredients} 
                     page_url={page_url} display_status={display_status}/>
             );
         });
@@ -111,12 +113,12 @@ export function FeedOrder( { orders, trunc_ingredients, page_url, display_status
 
     return(
         <>
-        {Object.keys(trunc_ingredients).length && orders?.length &&
+        {Object.keys(trunc_ingredients).length && orders?.length ?
             
             <div className={styles.container}>
                     {orderList}
             </div> 
-        }       
+        : null}       
         </> 
     )
 }

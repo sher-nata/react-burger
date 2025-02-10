@@ -26,7 +26,7 @@ export function OrderHistoryPage({}) {
 
     const orders = feed?.orders ? [...feed?.orders].reverse() : []
 
-    const is_ready = Object.keys(trunc_ingredients).length && ws_status === 'connected' && orders
+    const is_ready = Object.keys(trunc_ingredients).length && ws_status === 'connected' && orders.length
 
     useEffect(() => {
         const wssUrl = new URL(wsBaseUrl);

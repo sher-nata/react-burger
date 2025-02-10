@@ -23,7 +23,7 @@ export function FeedPage() {
     const order_done = orders ? orders.filter(order => order.status === 'done').map((order) => (order.number)).slice(0, MAX_STAT) : []
     const order_pending = orders ? orders.filter(order => order.status === 'pending').map((order) => (order.number)).slice(0, MAX_STAT) : []
 
-    const is_ready = !isFailed && !isLoading && Object.keys(trunc_ingredients).length && ws_status === 'connected' && feed
+    const is_ready = (!isFailed && !isLoading && Object.keys(trunc_ingredients).length && ws_status === 'connected' && orders)
     const is_loading = isLoading || ws_status === 'connecting'
 
     const orderList: React.ReactNode[] = [];
@@ -45,12 +45,12 @@ export function FeedPage() {
 
     order_done.forEach((number) => {
     order_done_arr.push(
-        <p key={uuidv4()}  className="text text_type_main-default">{number}</p>
+        <p key={number}  className="text text_type_main-default">{number}</p>
         );
     });
     order_pending.forEach((number) => {
         order_pending_arr.push(
-            <p key={uuidv4()}  className="text text_type_main-default">{number}</p>
+            <p key={number}  className="text text_type_main-default">{number}</p>
             );
         });
     

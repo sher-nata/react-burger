@@ -149,7 +149,7 @@ export default function BurgerConstructor({bun=undefined, ingredients=[], onClic
         return (
             <>
                 {bun ?
-                (<div key={uuidv4()} className={burgerConstructorStyles.ingredient_bun}>
+                (<div key={bun._id} className={burgerConstructorStyles.ingredient_bun}>
                     <ConstructorElement type={top ? "top" : "bottom"} isLocked={true}
                     text={`${bun.name} ${top ? "(верх)" : "(низ)" }`}
                     price={bun.price}
