@@ -9,6 +9,9 @@ export const refreshTokenUrl = '/auth/token'
 export const ingredientsUrl = '/ingredients'
 export const orderUrl = '/orders'
 
+export const wsBaseUrl = 'wss://norma.nomoreparties.space/orders' 
+export const wsFeedUrl = '/all' 
+
 export const loginPage = '/login'
 export const registerPage = '/register'
 export const forgotPasswordPage = '/forgot-password'

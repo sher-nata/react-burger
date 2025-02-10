@@ -17,8 +17,20 @@ interface IConstructorBurgerIngredient extends IBurgerIngredient {
     uniqueId: string;
 }
 
+interface ITruncIngredients{
+    [name: string]: {
+        price: number;
+        name: string;
+        image_mobile: string;
+    };
+}
+
+// --------------
+// Store
+
 type TIngridients={
     ingredients: IBurgerIngredient[];
+    trunc_ingredients: ITruncIngredients;
     isLoading: boolean;
     isFailed: boolean;
 }
@@ -72,6 +84,14 @@ type TOrderState = {
     order: TOrder
 };
 
+type TFeedState = {
+    status: 'connecting' | 'connected' | 'disconnected';
+    feed: IFeed | null;
+    connectionError: string | null;
+};
+
+// -----------
+
 interface IOrderData {
     name: string;
     order: {
@@ -80,7 +100,42 @@ interface IOrderData {
     success: boolean
 };
 
-interface IAction {
-    type: string;
-    payload?: any; 
+// interface IAction {
+//     type: string;
+//     payload?: any; 
+// }
+
+//User
+interface IUserData{
+    email: string; 
+    name: string
+};
+
+interface ILoginData{
+    email: string; 
+    password: string;
+};
+
+interface IRegisterData {
+    email: string; 
+    name: string; 
+    password: string;
+};
+
+//feed
+interface IFeedOrder {
+    ingredients: string[];
+    _id: string;
+    name: string;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface IFeed {
+    success: boolean;
+    orders: IFeedOrder[];
+    total: number;
+    totalToday: number;
 }

@@ -1,52 +1,96 @@
-import { Dispatch } from 'redux'; 
+ import { AppDispatch } from '../types';
 import { appRequest, protectedAppRequest, getRefreshToken, 
     setlocalStorageItem, clearLocalStorage } from '../../utils/request-utils';
 import { registerUrl, loginUrl, userDataUrl, logoutUrl } from '../../utils/global_const';
     
 
-export const SET_LOGIN_REQUEST = 'SET_LOGIN_REQUEST';
-export const SET_LOGIN_SUCCESS = 'SET_LOGIN_SUCCESS';
-export const SET_LOGIN_FAILED = 'SET_LOGIN_FAILED';
+export const SET_LOGIN_REQUEST: 'SET_LOGIN_REQUEST' = 'SET_LOGIN_REQUEST';
+export const SET_LOGIN_SUCCESS: 'SET_LOGIN_SUCCESS' = 'SET_LOGIN_SUCCESS';
+export const SET_LOGIN_FAILED: 'SET_LOGIN_FAILED' = 'SET_LOGIN_FAILED';
 
-export const SET_REGISTER_REQUEST = 'SET_REGISTER_REQUEST';
-export const SET_REGISTER_SUCCESS = 'SET_REGISTER_SUCCESS';
-export const SET_REGISTER_FAILED = 'SET_REGISTER_FAILED';
+export const SET_REGISTER_REQUEST: 'SET_REGISTER_REQUEST' = 'SET_REGISTER_REQUEST';
+export const SET_REGISTER_SUCCESS: 'SET_REGISTER_SUCCESS' = 'SET_REGISTER_SUCCESS';
+export const SET_REGISTER_FAILED: 'SET_REGISTER_FAILED' = 'SET_REGISTER_FAILED';
 
-export const SET_USER_REQUEST = 'SET_USER_REQUEST';
-export const SET_USER_SUCCESS = 'SET_USER_SUCCESS';
-export const SET_USER_FAILED = 'SET_USER_FAILED';
+export const SET_USER_REQUEST: 'SET_USER_REQUEST' = 'SET_USER_REQUEST';
+export const SET_USER_SUCCESS: 'SET_USER_SUCCESS' = 'SET_USER_SUCCESS';
+export const SET_USER_FAILED: 'SET_USER_FAILED' = 'SET_USER_FAILED';
 
-export const SET_LOGOUT_SUCCESS = 'SET_LOGOUT_SUCCESS';
-
-interface IUserData{
-    email: string; 
-    name: string
-};
-
-interface ILoginData{
-    email: string; 
-    password: string;
-};
-
-interface IRegisterData {
-    email: string; 
-    name: string; 
-    password: string;
-};
+export const SET_LOGOUT_SUCCESS: 'SET_LOGOUT_SUCCESS' = 'SET_LOGOUT_SUCCESS';
 
 
-export function setLoginRequest() {
+export interface ISetLoginRequest {
+    readonly type: typeof SET_LOGIN_REQUEST;
+}
+
+export interface ISetLoginSuccess {
+  readonly type: typeof SET_LOGIN_SUCCESS;
+  payload: { user: IUserData } 
+}
+
+export interface ISetLoginFailed {
+  readonly type: typeof SET_LOGIN_FAILED;
+  payload: { error: string } 
+}
+
+export interface ISetRegisterRequest {
+  readonly type: typeof SET_REGISTER_REQUEST;
+}
+
+export interface ISetRegisterSuccess {
+  readonly type: typeof SET_REGISTER_SUCCESS;
+  payload: { user: IUserData } 
+}
+
+export interface ISetRegisterFailed {
+  readonly type: typeof SET_REGISTER_FAILED;
+  payload: { error: string } 
+}
+
+export interface ISetUserRequest {
+  readonly type: typeof SET_USER_REQUEST;
+}
+
+export interface ISetUserSuccess {
+  readonly type: typeof SET_USER_SUCCESS;
+  payload: { user: IUserData } 
+}
+
+export interface ISetUserFailed {
+  readonly type: typeof SET_USER_FAILED;
+  payload: { error: string } 
+}
+
+export interface ISetLoguotSuccess {
+  readonly type: typeof SET_LOGOUT_SUCCESS;
+}
+
+export type TUserActions = 
+    | ISetLoginRequest
+    | ISetLoginSuccess
+    | ISetLoginFailed
+    | ISetRegisterRequest
+    | ISetRegisterSuccess
+    | ISetRegisterFailed
+    | ISetUserRequest
+    | ISetUserSuccess
+    | ISetUserFailed
+    | ISetLoguotSuccess;
+
+
+
+export function setLoginRequest(): ISetLoginRequest {
   return { type: SET_LOGIN_REQUEST }
 }
 
-export function setLoginSuccess(data: IUserData) {
+export function setLoginSuccess(data: IUserData): ISetLoginSuccess {
   return {
     type: SET_LOGIN_SUCCESS,
     payload: { user: data }
   }
 }
 
-export function setLoginFailed(message: string) {
+export function setLoginFailed(message: string): ISetLoginFailed {
   return {
     type: SET_LOGIN_FAILED,
     payload: { error: message }
@@ -54,18 +98,18 @@ export function setLoginFailed(message: string) {
 }
 
 
-export function setRegisterRequest() {
+export function setRegisterRequest(): ISetRegisterRequest {
   return { type: SET_REGISTER_REQUEST }
 }
 
-export function setRegisterSuccess(data: IUserData) {
+export function setRegisterSuccess(data: IUserData): ISetRegisterSuccess {
   return {
     type: SET_REGISTER_SUCCESS,
     payload: { user: data }
   }
 }
 
-export function setRegisterFailed(message: string) {
+export function setRegisterFailed(message: string): ISetRegisterFailed {
   return {
     type: SET_REGISTER_FAILED,
     payload: { error: message }
@@ -73,18 +117,18 @@ export function setRegisterFailed(message: string) {
 }
 
 
-export function setUserRequest() {
+export function setUserRequest(): ISetUserRequest {
   return { type: SET_USER_REQUEST }
 }
 
-export function setUserSuccess(data: IUserData) {
+export function setUserSuccess(data: IUserData): ISetUserSuccess {
   return {
     type: SET_USER_SUCCESS,
     payload: { user: data }
   }
 }
 
-export function setUserFailed(message: string) {
+export function setUserFailed(message: string): ISetUserFailed {
   return {
     type: SET_USER_FAILED,
     payload: { error: message }
@@ -92,12 +136,12 @@ export function setUserFailed(message: string) {
 }
 
 
-export function setLogoutSuccess() {
+export function setLogoutSuccess(): ISetLoguotSuccess {
   return { type: SET_LOGOUT_SUCCESS }
 }
 
 
-export const setRegister = (form: IRegisterData) => async (dispatch: Dispatch<any>) => {
+export const setRegister = (form: IRegisterData) => async (dispatch: AppDispatch) => {
 
   dispatch(setRegisterRequest());
   const options = {
@@ -119,7 +163,7 @@ export const setRegister = (form: IRegisterData) => async (dispatch: Dispatch<an
 
 };
 
-export const signIn = (form: ILoginData) => async (dispatch: Dispatch<any>) => {
+export const signIn = (form: ILoginData) => async (dispatch: AppDispatch) => {
 
   dispatch(setLoginRequest());
   const options = {
@@ -141,7 +185,7 @@ export const signIn = (form: ILoginData) => async (dispatch: Dispatch<any>) => {
 
 };
 
-export const signOut = () => async (dispatch: Dispatch<any>) => {
+export const signOut = () => async (dispatch: AppDispatch) => {
 
   const token = getRefreshToken()
 
@@ -164,7 +208,8 @@ export const signOut = () => async (dispatch: Dispatch<any>) => {
 
 };
 
-export const getUserData = () => async (dispatch: Dispatch) => {
+
+export const getUserData = () => async (dispatch: AppDispatch) => {
 
   const refreshToken = getRefreshToken()
   if (!refreshToken) {
@@ -186,7 +231,7 @@ export const getUserData = () => async (dispatch: Dispatch) => {
     });
 };
 
-export const setUserData = (form: IRegisterData) => async (dispatch: Dispatch<any>) => {
+export const setUserData = (form: IRegisterData) => async (dispatch: AppDispatch) => {
 
   dispatch(setUserRequest());
   const options = {

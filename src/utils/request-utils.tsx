@@ -73,7 +73,7 @@ export const appRequest = async (url: string, {...options}={}) => {
     }
   };
 
-  const refreshAccessToken = async() =>{
+  export const refreshAccessToken = async() =>{
     
     let accessToken = getAccessToken()
     if (!accessToken || (accessToken && isTokenExpired(accessToken))){

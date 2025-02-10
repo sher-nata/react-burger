@@ -1,0 +1,137 @@
+.main__container{
+    height: 100%;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+  }
+  
+  .container{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      align-items: stretch;
+      width: 620px; 
+      height: calc(97vh - 88px);
+      background: #131316;
+      gap: 16px;
+  }
+  
+  .list{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .order_card{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 564px;
+    min-height: 160px;
+    border-radius: 40px;
+    padding: 24px;
+    gap: 24px;
+    background: #1C1C21
+  }
+
+  .order_number{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    width: 536px;
+    height: 24px;
+  }
+
+  .number{
+    display: flex;
+    align-items: center;
+    width: 102px;
+    height: 24px;
+  }
+  .timestump{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 418px;
+    height: 24px;
+  }
+  .order_name{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 8px;
+    width: 536px;
+  }
+
+  .order_ingredients_price{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px;
+    gap: 24px;
+    width: 536px;
+    height: 64px;
+  }
+
+  .order_ingredients{
+    position: relative;
+    width: 436px;
+    height: 64px;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+  }
+
+  .order_ingredient_preview{
+    box-sizing: border-box;
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    left: 0px;
+    top: 0px;
+
+    background: #131316;
+    border: 2px solid #801AB2;
+    border-radius: 100px;
+  }
+
+  .order_ingredient_illustration{
+    position: absolute;
+    width: 112px;
+    height: 56px;
+    top: 0px;
+    left: -34px;
+  }
+
+  .number_over_ingredients{
+    display: flex;
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .second{
+    position: absolute;
+  }
+
+  .order_price{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;
+
+    width: 76px;
+    height: 64px;
+  }
+

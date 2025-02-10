@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate, useLocation  } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from "../services/types"
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password.module.css';
 import { resetPassword, getlocalStorageItem } from '../utils/request-utils';
@@ -13,7 +13,7 @@ export function ResetPasswordPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const authUser = useSelector((state: TUserState) => state.user.user)
+    const authUser = useAppSelector(state=> state.user.user)
 
     const [isLoading, setLoading] = useState(false);
     const [form, setValue] = useState({ password: '', token: '' });

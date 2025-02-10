@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../services/types"
 import styles from './profile.module.css';
 import { signOut } from '../services/actions/user';
 import { ordersHistoryPage, loginPage } from '../utils/global_const';
@@ -11,11 +11,11 @@ const userDataUrl = 'auth/user'
 
 export function ProfilePage() {
 
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate();
 
-    const authUser = useSelector((state: TUserState) => state.user.user)
-    const isUserLoading = useSelector((state: TUserState) => state.user.isUserLoading)
+    const authUser = useAppSelector(state => state.user.user)
+    const isUserLoading = useAppSelector(state => state.user.isUserLoading)
     const [isLoading, setIsLoading] = useState(false);
 
 

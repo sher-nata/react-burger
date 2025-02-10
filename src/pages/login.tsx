@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../services/types"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 import { signIn } from '../services/actions/user';
@@ -10,13 +10,13 @@ import AppLoader from '../components/loader/loader'
 
 export function LoginPage() {
     
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate();
     const location = useLocation();
 
-    const authUser = useSelector((state: TUserState) => state.user.user)
-    const isLoading = useSelector((state: TUserState) => state.user.isLoginLoading)
-    const loginError =  useSelector((state: TUserState) => state.user.loginError)
+    const authUser = useAppSelector(state => state.user.user)
+    const isLoading = useAppSelector(state => state.user.isLoginLoading)
+    const loginError =  useAppSelector(state => state.user.loginError)
     const [form, setValue] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
 

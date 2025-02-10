@@ -27,12 +27,12 @@ export const ProtectedRouteElement = ({ onlyUnAuth=false, element }: IProtectedR
     }, []);
 
     if (isLoading) return <AppLoader />;
-    
+  
     if (onlyUnAuth) {
         return !authUser ? element : <Navigate to={location.state?.from ? location.state.from : "/"} replace={ true }/>;
     }
     else {
-        return authUser ? element : <Navigate to={loginPage} state={{ from: location }} />;
+        return authUser ? element : <Navigate to={loginPage} state={{ from: location}} />;
     }
     
     

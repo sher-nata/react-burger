@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../../services/types"
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { setUserData } from '../../services/actions/user';
 import styles from './profile.module.css'
@@ -7,9 +7,9 @@ import styles from './profile.module.css'
 
 export default function Profile() {
 
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
 
-    const authUser = useSelector((state: TUserState) => state.user.user)
+    const authUser = useAppSelector(state => state.user.user)
     const [valuesChanged, setvaluesChanged] = useState(false);
     const [form, setValue] = useState({name: "", email: "", password: '' });
 

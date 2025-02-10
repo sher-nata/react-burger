@@ -1,4 +1,5 @@
 import React, { useEffect, FC } from 'react';
+import { useParams } from 'react-router-dom';
 import ReactDOM from "react-dom";
 import modalStyles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -7,6 +8,7 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 
 interface IModalProps {
     header?: string;
+    isFeed?: boolean;
     onClose:((e?: React.SyntheticEvent) => void);
     children: React.ReactNode;
 };
@@ -32,7 +34,11 @@ const ModalHeader = ({ header, onClose }: IModalHeaderProps) => {
     );
 }; 
 
-const Modal: FC<IModalProps>= ({header="", onClose, children}) => {
+const Modal: FC<IModalProps>= ({header="", isFeed=false, onClose, children}) => {
+    
+    const params = useParams()
+    const modal_header = isFeed && params?.number ? `#${params.number}` : header;
+    
     
     useEffect(() => {
         const handleEscapePress = (e: KeyboardEvent) => {
@@ -51,7 +57,7 @@ const Modal: FC<IModalProps>= ({header="", onClose, children}) => {
             <>
                 <ModalOverlay onClose={onClose} />
                 <div className={modalStyles.main__container}>
-                    <ModalHeader onClose={onClose} header={header}/>
+                    <ModalHeader onClose={onClose} header={modal_header}/>
                     {children}
                 </div>
             </>
