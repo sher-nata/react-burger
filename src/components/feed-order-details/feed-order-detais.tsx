@@ -5,6 +5,7 @@ import styles from './feed-order-details.module.css';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { orderUrl } from '../../utils/global_const';
 import { appRequest } from '../../utils/request-utils';
+import { orderStatus } from '../../utils/global_const';
 
 
 interface FeedElementProps {
@@ -19,12 +20,6 @@ export default function FeedOrderDetails({ isModal = false }: FeedElementProps) 
     const feed_history = useAppSelector(state => state.history.feed);
 
     const [order, setOrder] = useState<IFeedOrder | undefined>(undefined);
-
-    const oreder_status: { [key: string]: string } = {
-        'done': 'Выполнен',
-        'pending': 'В работе',
-        'created': 'Создан'
-    }
 
     const getOrder = async (number: string) => {
 
@@ -104,7 +99,7 @@ export default function FeedOrderDetails({ isModal = false }: FeedElementProps) 
                     <p className="text text_type_main-medium">{order.name}</p>
                 </div>
                 <div className={styles.order_status}>
-                    <p className="text text_type_main-small">{oreder_status[order.status] ? oreder_status[order.status] : ""}</p>
+                    <p className="text text_type_main-small">{orderStatus[order.status] ? orderStatus[order.status] : ""}</p>
                 </div>
                 <div className={styles.order_name}>
                     <p className="text text_type_main-medium">Состав:</p>

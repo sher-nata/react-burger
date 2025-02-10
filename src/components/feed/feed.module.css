@@ -67,6 +67,10 @@
     gap: 8px;
     width: 536px;
   }
+  .order_status{
+    padding: 0px;
+    width: 536px;
+  }
 
   .order_ingredients_price{
     display: flex;
@@ -117,10 +121,6 @@
     z-index: 10;
     align-items: center;
     justify-content: center;
-  }
-
-  .second{
-    position: absolute;
   }
 
   .order_price{

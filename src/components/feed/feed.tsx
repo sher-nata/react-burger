@@ -2,21 +2,23 @@ import {v4 as uuidv4} from 'uuid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './feed.module.css';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-
+import { orderStatus } from '../../utils/global_const';
 
 interface FeedOrderProps {
     orders?: IFeedOrder[] | null;
     trunc_ingredients: ITruncIngredients;
     page_url: string;
+    display_status? : boolean;
 }
 
 interface FeedElementProps {
     order: IFeedOrder;
     trunc_ingredients: ITruncIngredients;
     page_url: string;
+    display_status? : boolean;
 }
 
-export const FeedElement = ({ order, trunc_ingredients, page_url }: FeedElementProps) => {
+export const FeedElement = ({ order, trunc_ingredients, page_url, display_status=false }: FeedElementProps) => {
     
     const navigate = useNavigate();
     const location = useLocation();
@@ -74,7 +76,10 @@ export const FeedElement = ({ order, trunc_ingredients, page_url }: FeedElementP
             </div> 
             <div className={styles.order_name}>
                 <p className="text text_type_main-medium">{order.name}</p>
-            </div>
+                {display_status && <div className={styles.order_status} style={{color: order.status === 'done' ? '#00cccc' : '##ffffff'}}>
+                <p className="text text_type_main-small">{orderStatus[order.status]} </p>
+            </div>}
+            </div>    
             <div className={styles.order_ingredients_price}>
                 <div className={styles.order_ingredients}>
                     {order_ingredients_list}
@@ -90,7 +95,7 @@ export const FeedElement = ({ order, trunc_ingredients, page_url }: FeedElementP
 
 }
 
-export function FeedOrder( { orders, trunc_ingredients, page_url }:  FeedOrderProps) {
+export function FeedOrder( { orders, trunc_ingredients, page_url, display_status=false }:  FeedOrderProps) {
 
     const orderList: React.ReactNode[] = [];
 
@@ -99,7 +104,7 @@ export function FeedOrder( { orders, trunc_ingredients, page_url }:  FeedOrderPr
 
             orderList.push(
                 <FeedElement key={order.number} order={order} trunc_ingredients={trunc_ingredients} 
-                    page_url={page_url} />
+                    page_url={page_url} display_status={display_status}/>
             );
         });
     }

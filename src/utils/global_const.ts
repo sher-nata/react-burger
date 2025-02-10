@@ -22,3 +22,8 @@ export const ordersFeedPage = '/feed'
 export const ingredientDetailsPage = '/ingredient'
 export const homePage = '/'
 
+export const orderStatus: { [key: string]: string } = {
+    'done': 'Выполнен',
+    'pending': 'В работе',
+    'created': 'Создан'
+}

@@ -60,7 +60,7 @@ export function OrderHistoryPage({}) {
                 <div className={styles.container}> 
                     <div className={styles.feed_container}> 
                         <FeedOrder orders={orders} trunc_ingredients={trunc_ingredients} 
-                        page_url={`${profilePage}/${ordersHistoryPage}`} />
+                        page_url={`${profilePage}/${ordersHistoryPage}`} display_status={true} />
                     </div>
                 </div>
                 } 
