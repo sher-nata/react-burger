@@ -1,5 +1,5 @@
 import { useRef, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from "../../services/types"
 import { useDrag, useDrop } from "react-dnd";
 import {v4 as uuidv4} from 'uuid';
 import burgerConstructorStyles from './burger-constructor.module.css';
@@ -53,7 +53,7 @@ const ConstructorIngredient = ({ ingredient, index, onDelete }: IConstructorIngr
     const ref = useRef<HTMLDivElement>(null);
     const id = ingredient._id;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [{ handlerId }, drop] = useDrop({
         accept: "constructorIngredient",
@@ -149,7 +149,7 @@ export default function BurgerConstructor({bun=undefined, ingredients=[], onClic
         return (
             <>
                 {bun ?
-                (<div key={uuidv4()} className={burgerConstructorStyles.ingredient_bun}>
+                (<div key={bun._id + top ? "_top" : "_bottom"} className={burgerConstructorStyles.ingredient_bun}>
                     <ConstructorElement type={top ? "top" : "bottom"} isLocked={true}
                     text={`${bun.name} ${top ? "(верх)" : "(низ)" }`}
                     price={bun.price}

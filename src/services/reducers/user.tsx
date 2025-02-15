@@ -10,8 +10,23 @@ import {
     SET_USER_FAILED,
     SET_LOGOUT_SUCCESS,
  } from '../actions/user'
+import { TUserActions } from '../actions/user'
 
- const initialState = {
+
+type TUserState = {
+    user: IUserData | null;
+    loginError: string;
+    isLoginLoading: boolean;
+    isLoginFailed: boolean;
+    registerError: string;
+    isRegisterLoading: boolean;
+    isRegisterFailed: boolean;
+    userError: string;
+    isUserLoading: boolean;
+    isUserFailed: boolean;
+  }
+
+ const initialState: TUserState = {
     user: null,
     loginError: "",
     isLoginLoading: false, 
@@ -25,7 +40,7 @@ import {
   }
 
 
-export function userReducer(state = initialState, action: IAction){
+export function userReducer(state = initialState, action: TUserActions): TUserState{
     switch (action.type) {
         case SET_LOGIN_REQUEST: {
             return { ...state, isLoginLoading: true, isLoginFailed: false, loginError: "" };

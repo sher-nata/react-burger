@@ -9,6 +9,9 @@ export const refreshTokenUrl = '/auth/token'
 export const ingredientsUrl = '/ingredients'
 export const orderUrl = '/orders'
 
+export const wsBaseUrl = 'wss://norma.nomoreparties.space/orders' 
+export const wsFeedUrl = '/all' 
+
 export const loginPage = '/login'
 export const registerPage = '/register'
 export const forgotPasswordPage = '/forgot-password'
@@ -19,3 +22,8 @@ export const ordersFeedPage = '/feed'
 export const ingredientDetailsPage = '/ingredient'
 export const homePage = '/'
 
+export const orderStatus: { [key: string]: string } = {
+    'done': 'Выполнен',
+    'pending': 'В работе',
+    'created': 'Создан'
+}

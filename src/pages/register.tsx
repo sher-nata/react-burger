@@ -3,20 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './register.module.css';
 import { setRegister } from '../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../services/types"
 import { loginPage, homePage } from '../utils/global_const';
 import AppLoader from '../components/loader/loader'
 
 
 export function RegisterPage() {
     
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate();
 
-    const authUser = useSelector((state: TUserState) => state.user.user)
-    const isLoading = useSelector((state: TUserState) => state.user.isRegisterLoading)
-    const isFailed = useSelector((state: TUserState) => state.user.isRegisterFailed)
-    const registerError = useSelector((state: TUserState) => state.user.registerError)
+    const authUser = useAppSelector(state => state.user.user)
+    const isLoading = useAppSelector(state => state.user.isRegisterLoading)
+    const isFailed = useAppSelector(state => state.user.isRegisterFailed)
+    const registerError = useAppSelector(state => state.user.registerError)
     const [form, setValue] = useState({ name: '', email: '', password: '' });
     const [error, setError] = useState('');
 
