@@ -1,4 +1,4 @@
-import React, { useRef }  from 'react';
+import React, {useEffect, useRef }  from 'react';
 import { useAppSelector, useAppDispatch } from "../services/types";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { DndProvider } from "react-dnd";
@@ -45,6 +45,13 @@ export function MainPage() {
   const tabSauce = useRef<HTMLDivElement>(null);
   const tabMain = useRef<HTMLDivElement>(null);
 
+
+   useEffect(() => {
+  
+      dispatch(getUserData());
+  
+    }, [dispatch]);
+
   const hableOpenOrderModal = async (e?: React.SyntheticEvent) => {
     if (constructorBun && constructorIngredients && constructorIngredients.length > 0) {
       await dispatch(getUserData)
@@ -65,7 +72,6 @@ export function MainPage() {
       e.stopPropagation();
     }
   }
-
   const handleOpenIngredientModal = (e: React.BaseSyntheticEvent<Event, EventTarget & Element, EventTarget>) => {
     if (e) {
       e.stopPropagation();
@@ -132,7 +138,7 @@ export function MainPage() {
         </div>
         <div className={styles.columns}>
           {ingredients.filter(ing => ing.type === burgerIngredientsItem.type).map((ingredient) => (
-            <div className={styles.column} key={ingredient._id} id={ingredient._id} onClick={handleOpenIngredientModal}>
+            <div data-test='ingredient' className={styles.column} key={ingredient._id} id={ingredient._id} onClick={handleOpenIngredientModal}>
               <BurgerIngredients ingredient={ingredient} />
             </div>
           ))}

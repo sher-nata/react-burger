@@ -26,7 +26,7 @@ type TUserState = {
     isUserFailed: boolean;
   }
 
- const initialState: TUserState = {
+ export const initialState: TUserState = {
     user: null,
     loginError: "",
     isLoginLoading: false, 

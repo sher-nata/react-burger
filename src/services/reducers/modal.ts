@@ -11,7 +11,7 @@ type TModalState = {
   isOrder: boolean;
 }
 
-const initialState: TModalState = {
+export const initialState: TModalState = {
     isModalOpen: false,
     isOrder: false
 }
@@ -22,6 +22,7 @@ export const modalReducer = (state = initialState, action: TModalActions): TModa
         return {
             ...state,
             isModalOpen: true,
+            isOrder: false,
         };
       }
       case OPEN_ORDER_MODAL: {

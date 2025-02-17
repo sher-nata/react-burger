@@ -26,7 +26,7 @@ const ModalHeader = ({ header, onClose }: IModalHeaderProps) => {
         <>
             <div className={modalStyles.header}>
                 <p className="text text_type_main-medium">{header}</p>
-                <div className={modalStyles.button} onClick={onClose}>
+                <div data-test="modal_close_button" className={modalStyles.button} onClick={onClose}>
                         <CloseIcon type="primary" />
                 </div>
             </div>
@@ -56,7 +56,7 @@ const Modal: FC<IModalProps>= ({header="", isFeed=false, onClose, children}) => 
         (
             <>
                 <ModalOverlay onClose={onClose} />
-                <div className={modalStyles.main__container}>
+                <div data-test='moadal_main_container' className={modalStyles.main__container}>
                     <ModalHeader onClose={onClose} header={modal_header}/>
                     {children}
                 </div>

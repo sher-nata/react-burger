@@ -7,7 +7,7 @@ import {
     RESET_INGREDIENTS } from "../actions/burger-ingredients";
     import { TBurgerIngredientsActions } from "../actions/burger-ingredients";
 
-const initialState: TIngridients = {
+export const initialState: TIngridients = {
     ingredients: [],
     trunc_ingredients: {}, 
     isLoading: false, 
