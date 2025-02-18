@@ -9,7 +9,7 @@ import {
     TWSFeedActions
   } from '../actions/feed';
   
-  const initialState: TFeedState = {
+  export const initialState: TFeedState = {
     status: 'disconnected',
     feed: null,
     connectionError: null,

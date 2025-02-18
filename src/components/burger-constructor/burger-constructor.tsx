@@ -149,7 +149,7 @@ export default function BurgerConstructor({bun=undefined, ingredients=[], onClic
         return (
             <>
                 {bun ?
-                (<div key={bun._id + top ? "_top" : "_bottom"} className={burgerConstructorStyles.ingredient_bun}>
+                (<div data-test={`constructor_bun${top ? "_top" : "_bottom"}`} key={bun._id + top ? "_top" : "_bottom"} className={burgerConstructorStyles.ingredient_bun}>
                     <ConstructorElement type={top ? "top" : "bottom"} isLocked={true}
                     text={`${bun.name} ${top ? "(верх)" : "(низ)" }`}
                     price={bun.price}
@@ -171,7 +171,7 @@ export default function BurgerConstructor({bun=undefined, ingredients=[], onClic
             <div className={burgerConstructorStyles.components} ref={dropTarget}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', height: '100%'}}>
                     {bunIngredient(true)}
-                    <div className={burgerConstructorStyles.container_other_ingredients}>
+                    <div data-test='constructor_other_ingredients' className={burgerConstructorStyles.container_other_ingredients}>
                         {otherIngredients}                
                     </div>
                     {bunIngredient(false)}

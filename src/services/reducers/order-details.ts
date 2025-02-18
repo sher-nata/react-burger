@@ -11,7 +11,7 @@ import {
     isFailed: boolean;
   }
 
- const initialState: TOrderState = {
+ export const initialState: TOrderState = {
     orderDetails: undefined, 
     isLoading: false, 
     isFailed: false

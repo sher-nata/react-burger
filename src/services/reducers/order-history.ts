@@ -9,7 +9,7 @@ import {
     TWSOrderHistoryActions
   } from '../actions/order-history';
   
-  const initialState: TFeedState = {
+export const initialState: TFeedState = {
     status: 'disconnected',
     feed: null,
     connectionError: null,
